@@ -2,14 +2,14 @@
 	path = Documentation~/doxygen-awesome-css
 	url = https://github.com/jothepro/doxygen-awesome-css.git
 [submodule "HPUI-Core"]
-	path = Packages/HPUI-Core
+	path = Packages/ubc.ok.ovilab.hpui-core
 	url = https://github.com/ovi-lab/HPUI-Core
-[submodule "HPUI-Components"]
-	path = Packages/HPUI-Components
-	url = https://github.com/ovi-lab/HPUI-Components
-[submodule "HPUI-Cone-Interactor"]
-	path = Packages/HPUI-Cone-Interactor
-	url = https://github.com/ovi-lab/HPUI-Cone-Interactor
 [submodule "vicon-nexus-unity-stream"]
-	path = Packages/vicon-nexus-unity-stream
+	path = Packages/ubc.ok.ovilab.vicon-nexus-unity-stream
 	url = https://github.com/ovi-lab/vicon-nexus-unity-stream
+[submodule "HPUI-Cone-Interactor"]
+	path = Packages/ubc.ok.ovilab.hpui-cone-interactor
+	url = https://github.com/ovi-lab/HPUI-Cone-Interactor
+[submodule "HPUI-Components"]
+	path = Packages/ubc.ok.ovilab.hpui-components
+	url = https://github.com/ovi-lab/HPUI-Components

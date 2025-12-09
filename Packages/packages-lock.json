@@ -287,7 +287,7 @@
       "url": "https://packages.unity.com"
     },
     "ubc.ok.ovilab.hpui-components": {
-      "version": "file:HPUI-Components",
+      "version": "file:ubc.ok.ovilab.hpui-components",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -299,7 +299,7 @@
       }
     },
     "ubc.ok.ovilab.hpui-cone-interactor": {
-      "version": "file:HPUI-Cone-Interactor",
+      "version": "file:ubc.ok.ovilab.hpui-cone-interactor",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -312,7 +312,7 @@
       }
     },
     "ubc.ok.ovilab.hpui-core": {
-      "version": "file:HPUI-Core",
+      "version": "file:ubc.ok.ovilab.hpui-core",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -321,6 +321,15 @@
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.mathematics": "1.3.2",
         "com.unity.burst": "1.8.18"
+      }
+    },
+    "ubc.ok.ovilab.vicon-nexus-unity-stream": {
+      "version": "file:ubc.ok.ovilab.vicon-nexus-unity-stream",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.0.1",
+        "com.unity.xr.hands": "1.5.0-pre.1"
       }
     },
     "com.unity.modules.accessibility": {

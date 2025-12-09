@@ -6,7 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/DiscreetInterfaces.unity
+    path: Assets/_Scenes/DiscreetInterfaces.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  m_configObjects: {}
+  m_configObjects:
+    ubc.ok.ovilab.vicon-nexus-unity-stream.xr-settings: {fileID: 11400000, guid: b3e5c67c619fb754f9dcdb01e123b8f7,
+      type: 2}
   m_UseUCBPForAssetBundles: 0
