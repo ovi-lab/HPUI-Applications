@@ -11,7 +11,7 @@
     },
     "com.unity.burst": {
       "version": "1.8.25",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
@@ -74,7 +74,7 @@
     },
     "com.unity.mathematics": {
       "version": "1.3.2",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -93,6 +93,20 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nvim": {
+      "version": "https://github.com/FREEZX/com.unity.nvim.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "8bf67297d965e932ce0043c7d1c5e4de18825687"
     },
     "com.unity.render-pipelines.core": {
       "version": "17.2.0",
@@ -173,6 +187,14 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.textmeshpro": {
+      "version": "5.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "2.0.0"
+      }
+    },
     "com.unity.timeline": {
       "version": "1.8.9",
       "depth": 0,
@@ -203,6 +225,103 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.core-utils": {
+      "version": "2.5.3",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.xr": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.hands": {
+      "version": "1.7.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.xr": "1.0.0",
+        "com.unity.inputsystem": "1.3.0",
+        "com.unity.mathematics": "1.2.6",
+        "com.unity.xr.core-utils": "2.2.0",
+        "com.unity.xr.management": "4.0.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.interaction.toolkit": {
+      "version": "3.2.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.xr": "1.0.0",
+        "com.unity.inputsystem": "1.8.1",
+        "com.unity.mathematics": "1.2.6",
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.xr.core-utils": "2.4.0",
+        "com.unity.modules.physics": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.legacyinputhelpers": {
+      "version": "2.1.12",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.vr": "1.0.0",
+        "com.unity.modules.xr": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.management": {
+      "version": "4.5.3",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.xr": "1.0.0",
+        "com.unity.xr.core-utils": "2.2.1",
+        "com.unity.modules.subsystems": "1.0.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "ubc.ok.ovilab.hpui-components": {
+      "version": "file:HPUI-Components",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.xr.hands": "1.5.0-pre.3",
+        "com.unity.xr.interaction.toolkit": "3.0.4",
+        "com.unity.textmeshpro": "3.0.6",
+        "com.unity.mathematics": "1.3.2",
+        "com.unity.burst": "1.8.18"
+      }
+    },
+    "ubc.ok.ovilab.hpui-cone-interactor": {
+      "version": "file:HPUI-Cone-Interactor",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.xr.hands": "1.5.0-pre.3",
+        "com.unity.xr.interaction.toolkit": "3.0.4",
+        "com.unity.textmeshpro": "3.0.6",
+        "com.unity.mathematics": "1.3.2",
+        "com.unity.burst": "1.8.18",
+        "com.unity.nuget.newtonsoft-json": "3.0.1"
+      }
+    },
+    "ubc.ok.ovilab.hpui-core": {
+      "version": "file:HPUI-Core",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.xr.hands": "1.5.0-pre.3",
+        "com.unity.xr.interaction.toolkit": "3.0.4",
+        "com.unity.textmeshpro": "3.0.6",
+        "com.unity.mathematics": "1.3.2",
+        "com.unity.burst": "1.8.18"
+      }
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
