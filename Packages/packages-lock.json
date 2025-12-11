@@ -286,6 +286,15 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.v0lt.editor-attributes": {
+      "version": "https://github.com/v0lt13/EditorAttributes.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "b3df3eb3ff04cdcca5c68847b68e962b16f333bc"
+    },
     "ubc.ok.ovilab.hpui-components": {
       "version": "file:ubc.ok.ovilab.hpui-components",
       "depth": 0,

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a61c573249a76a40bdf7147220ea031, type: 3}
   m_Name: ViconXRSettings
   m_EditorClassIdentifier: ubco.ovilab.ViconUnityStream::ubco.ovilab.ViconUnityStream.ViconXRSettings
-  enableXRHandSubsystem: 0
-  enableViconXRDevice: 0
+  enableXRHandSubsystem: 1
+  enableViconXRDevice: 1
