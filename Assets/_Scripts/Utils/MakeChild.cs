@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using EditorAttributes;
 using UnityEngine;
 
@@ -5,16 +7,16 @@ namespace _Scripts.Utils
 {
     public class MakeChild : MonoBehaviour
     {
-        [Tooltip("The target parent to make this object a child of")]
-        [SerializeField] private Transform targetParent;
+        [Tooltip("Mapping for the target parents and children")]
+        [SerializeField] private List<ParentChildPair> parentChildrenPairs;
 
         /// <summary>
-        /// The target parent to make this object a child of
+        /// Mapping for the target parents and children
         /// </summary>
-        public Transform TargetParent
+        public List<ParentChildPair> ParentChildPairs
         {
-            get => targetParent;
-            set => targetParent = value;
+            get => parentChildrenPairs;
+            set => parentChildrenPairs = value;
         }
 
         [Tooltip("Sets object as a child of the target on start")]
@@ -29,35 +31,9 @@ namespace _Scripts.Utils
             set => adoptOnStart = value;
         }
 
-        [Header("Offset Settings")]
-
-        [Tooltip("The local position offset to apply when making this object a child")]
-        [SerializeField] private Vector3 localPositionOffset = Vector3.zero;
-
-        /// <summary>
-        /// The local position offset to apply when making this object a child
-        /// </summary>
-        public Vector3 LocalPositionOffset
-        {
-            get => localPositionOffset;
-            set => localPositionOffset = value;
-        }
-
-        [Tooltip("The local rotation offset to apply when making this object a child")]
-        [SerializeField] private Vector3 localRotationOffset = Vector3.zero;
-
-        /// <summary>
-        /// The local rotation offset to apply when making this object a child
-        /// </summary>
-        public Vector3 LocalRotationOffset
-        {
-            get => localRotationOffset;
-            set => localRotationOffset = value;
-        }
-
         void Start()
         {
-            if (adoptOnStart && targetParent != null)
+            if (adoptOnStart && parentChildrenPairs != null && parentChildrenPairs.Count > 0)
             {
                 Child();
             }
@@ -66,9 +42,22 @@ namespace _Scripts.Utils
         [Button]
         public void Child()
         {
-            transform.SetParent(targetParent, false);
-            transform.localPosition = localPositionOffset;
-            transform.localRotation = Quaternion.Euler(localRotationOffset);
+            foreach (var parentChildPair in parentChildrenPairs)
+            {
+                parentChildPair.Child.SetParent(parentChildPair.Parent, false);
+                parentChildPair.Child.localPosition = parentChildPair.PositionOffset;
+                parentChildPair.Child.localRotation = Quaternion.identity;
+                // why? why do I ever?
+                parentChildPair.Child.Rotate(90f, 0f, 0f, Space.Self);
+            }
         }
+    }
+
+    [Serializable]
+    public class ParentChildPair
+    {
+        public Transform Parent;
+        public Transform Child;
+        public Vector3 PositionOffset;
     }
 }
