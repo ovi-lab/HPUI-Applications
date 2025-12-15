@@ -315,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 59599462}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
@@ -654,7 +654,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331249020}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
@@ -805,33 +805,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Utils.MakeChild
   parentChildrenPairs:
-  - Parent: {fileID: 1379152951}
+  - Name: Index-Tip
+    Parent: {fileID: 1379152951}
     Child: {fileID: 2013856733}
     PositionOffset: {x: 0, y: 0.005, z: 0.0045}
-  - Parent: {fileID: 359595188}
+  - Name: Index-Mid
+    Parent: {fileID: 359595188}
     Child: {fileID: 655392523}
     PositionOffset: {x: 0, y: 0.005, z: 0.0045}
-  - Parent: {fileID: 1491817353}
+  - Name: Index-Base
+    Parent: {fileID: 1491817353}
     Child: {fileID: 616572734}
-    PositionOffset: {x: 0, y: 0.0085, z: 0.005}
-  - Parent: {fileID: 2101328847}
+    PositionOffset: {x: 0, y: 0.012, z: 0.005}
+  - Name: Middle-Tip
+    Parent: {fileID: 2101328847}
     Child: {fileID: 1382995769}
     PositionOffset: {x: 0, y: 0.005, z: 0.0045}
-  - Parent: {fileID: 1761845633}
+  - Name: Middle-Mid
+    Parent: {fileID: 1761845633}
     Child: {fileID: 331249021}
-    PositionOffset: {x: 0, y: 0.005, z: 0.0045}
-  - Parent: {fileID: 420590393}
+    PositionOffset: {x: 0, y: 0.005, z: 0.0065}
+  - Name: Middle-Base
+    Parent: {fileID: 420590393}
     Child: {fileID: 1768264593}
-    PositionOffset: {x: 0, y: 0.0095, z: 0.0055}
-  - Parent: {fileID: 1232764389}
+    PositionOffset: {x: 0, y: 0.013, z: 0.0065}
+  - Name: Ring-Tip
+    Parent: {fileID: 1232764389}
     Child: {fileID: 2031221785}
-    PositionOffset: {x: 0, y: 0.005, z: 0.0045}
-  - Parent: {fileID: 1185758059}
+    PositionOffset: {x: 0, y: 0.005, z: 0.0065}
+  - Name: Ring-Mid
+    Parent: {fileID: 1185758059}
     Child: {fileID: 59599463}
-    PositionOffset: {x: 0, y: 0.005, z: 0.0045}
-  - Parent: {fileID: 29963605}
+    PositionOffset: {x: 0, y: 0.005, z: 0.0065}
+  - Name: Ring-Base
+    Parent: {fileID: 29963605}
     Child: {fileID: 1354952554}
-    PositionOffset: {x: 0, y: 0.0095, z: 0.0055}
+    PositionOffset: {x: 0, y: 0.013, z: 0.0065}
   adoptOnStart: 1
 --- !u!114 &395182621
 MonoBehaviour:
@@ -1120,8 +1129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2e32dc37bfc5a438f3819973b8ace1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ubco.ovilab.ViconUnityStream::ubco.ovilab.ViconUnityStream.SubjectDataManager
-  baseURI: ws://10.80.58.237:5001/marker/
-  streamType: 1
+  baseURI: ws://10.80.58.233:5001/marker/
+  streamType: 2
   enableWriteData: 0
   fileSaveLocationBase: 0
   fixedFileSaveLocationBase: 
@@ -1262,7 +1271,7 @@ MonoBehaviour:
       type: {class: HPUIGestureLogic, ns: ubco.ovilab.HPUI.Core.Interaction, asm: ubco.ovilab.HPUI.Core}
       data:
         debounceTimeWindow: 0.05
-        gestureCommitDelay: 0.05
+        gestureCommitDelay: 0.035
         switchCurrentTrackingInteractableThreshold: 0.15
         alwaysReportPositionInStateEvents: 0
     - rid: 2822998556922609919
@@ -1300,10 +1309,10 @@ MonoBehaviour:
       secondJointID: 5
       defaultJointRadius: 0.01
       offsetAngle: 0
-      offsetAsRatioToRadius: 1
-      longitudinalOffset: 0
+      offsetAsRatioToRadius: 0.12
+      longitudinalOffset: 0.32
     m_Variable: {fileID: 0}
-  targetTransform: {fileID: 0}
+  targetTransform: {fileID: 456330580}
 --- !u!1 &534922136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1441,7 +1450,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616572733}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
@@ -1728,9 +1737,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d77907274b87b2045a7dd79fbc6a8b23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIGestureDetector
-  tapEventDuration: 0.15
-  tapTimeoutDuration: 0.1
+  tapEventDuration: 0.25
+  tapTimeoutDuration: 0.035
   tapDistanceLimit: 0.1
+  doubleTapInterval: 0.25
+  longPressDuration: 0.4
+  longPressDistanceLimit: 0.1
+  longPressTimeoutDuration: 0.05
+  tapEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  doubleTapEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  longPressEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  verboseLogging: 0
 --- !u!4 &712817013
 Transform:
   m_ObjectHideFlags: 0
@@ -2318,7 +2341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354952553}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
@@ -2439,7 +2462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1382995768}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
@@ -2815,7 +2838,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768264592}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
@@ -3271,7 +3294,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031221784}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_ConstrainProportionsScale: 1
