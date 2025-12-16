@@ -19,6 +19,7 @@ namespace _Scripts
                 buttons.Add(button);
                 button.OnTap.AddListener(OnButtonTap);
                 button.OnDoubleTap.AddListener(OnDoubleTap);
+                button.OnLongPress.AddListener(OnLongPress);
             }
         }
 
@@ -41,6 +42,10 @@ namespace _Scripts
                         break;
                 }
             }
+            else if (button.LongPressMode)
+            {
+                numpadText.text += button.LongPressTapAction;
+            }
             else
             {
                 numpadText.text += button.TapAction;
@@ -52,6 +57,15 @@ namespace _Scripts
             foreach (var button in buttons)
             {
                 button.DoubleTapMode = !button.DoubleTapMode;
+                button.SetActiveMat();
+            }
+        }
+
+        private void OnLongPress(NumpadButton _)
+        {
+            foreach (var button in buttons)
+            {
+                button.LongPressMode = !button.LongPressMode;
                 button.SetActiveMat();
             }
         }

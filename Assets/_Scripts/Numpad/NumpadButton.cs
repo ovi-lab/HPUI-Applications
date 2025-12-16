@@ -9,7 +9,10 @@ namespace _Scripts
     {
         public UnityEvent<NumpadButton> OnTap;
         public UnityEvent<NumpadButton> OnDoubleTap;
+        public UnityEvent<NumpadButton> OnLongPress;
+
         public bool DoubleTapMode = false;
+        public bool LongPressMode = false;
 
         [SerializeField] private string tapAction;
         [SerializeField] private string doubleTapAction;
@@ -19,6 +22,8 @@ namespace _Scripts
         [SerializeField] private Material activeMat;
         [SerializeField] private Material doubleTapBaseMat;
         [SerializeField] private Material doubleTapActiveMat;
+        [SerializeField] private Material longPressBaseMat;
+        [SerializeField] private Material longPressActiveMat;
         [SerializeField] private Material blankMat;
 
         public string TapAction => tapAction;
@@ -38,6 +43,7 @@ namespace _Scripts
 
             gestureDetector.OnTap.AddListener(OnTapRecieved);
             gestureDetector.OnDoubleTap.AddListener(OnDoubleTapRecieved);
+            gestureDetector.OnLongPress.AddListener(OnLongPressRecieved);
 
             baseInteractable.GestureEvent.AddListener(OnGestureEvent);
         }
@@ -68,25 +74,32 @@ namespace _Scripts
             {
                 if (!string.IsNullOrEmpty(tapAction))
                 {
-                    TryLoadMat(tapAction, ref baseMat);
-                    TryLoadMat($"{tapAction}_active", ref activeMat);
+                    baseMat = TryLoadMat(tapAction);
+                    activeMat = TryLoadMat($"{tapAction}_active");
                 }
 
                 if (!string.IsNullOrEmpty(doubleTapAction))
                 {
-                    TryLoadMat(doubleTapAction, ref doubleTapBaseMat);
-                    TryLoadMat($"{doubleTapAction}_active", ref doubleTapActiveMat);
+                    doubleTapBaseMat = TryLoadMat(doubleTapAction);
+                    doubleTapActiveMat = TryLoadMat($"{doubleTapAction}_active");
+                }
+
+                if (!string.IsNullOrEmpty(longPressTapAction))
+                {
+                    longPressBaseMat = TryLoadMat(longPressTapAction);
+                    longPressActiveMat = TryLoadMat($"{longPressTapAction}_active");
                 }
             }
         }
 
-        private void TryLoadMat(string matName, ref Material target)
+        private Material TryLoadMat(string matName)
         {
             var mat = Resources.Load<Material>($"Numpad/Mats/{matName}");
             if (mat != null)
             {
-                target = mat;
+                return mat;
             }
+            return null;
         }
 
         private void OnTapRecieved(HPUIGestureEventArgs args)
@@ -99,6 +112,11 @@ namespace _Scripts
             OnDoubleTap?.Invoke(this);
         }
 
+        private void OnLongPressRecieved(HPUIGestureEventArgs args)
+        {
+            OnLongPress?.Invoke(this);
+        }
+
         private void OnGestureEvent(HPUIGestureEventArgs args)
         {
             SetActiveMat();
@@ -106,7 +124,14 @@ namespace _Scripts
 
         public void SetActiveMat()
         {
-            meshRenderer.material = DoubleTapMode ? string.IsNullOrWhiteSpace(doubleTapAction) ? blankMat : doubleTapActiveMat : activeMat;
+            // welcome to the spin zone :D
+            meshRenderer.material = DoubleTapMode ?
+                string.IsNullOrWhiteSpace(doubleTapAction) ?
+                blankMat : doubleTapActiveMat :
+                LongPressMode ?
+                string.IsNullOrWhiteSpace(longPressTapAction) ?
+                blankMat :
+                longPressActiveMat : activeMat;
 
             if (setBaseMatRoutine != null) StopCoroutine(setBaseMatRoutine);
             setBaseMatRoutine = StartCoroutine(ResetButtonColor());
@@ -115,7 +140,13 @@ namespace _Scripts
         private IEnumerator ResetButtonColor()
         {
             yield return new WaitForSeconds(0.2f);
-            meshRenderer.material = DoubleTapMode ? string.IsNullOrWhiteSpace(doubleTapAction) ? blankMat : doubleTapBaseMat : baseMat;
+            meshRenderer.material = DoubleTapMode ?
+                string.IsNullOrWhiteSpace(doubleTapAction) ?
+                blankMat : doubleTapBaseMat :
+                LongPressMode ?
+                string.IsNullOrWhiteSpace(longPressTapAction) ?
+                blankMat :
+                longPressBaseMat : baseMat;
         }
     }
 }
