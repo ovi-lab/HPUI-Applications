@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using ubco.ovilab.HPUI.Core.Interaction;
 using UnityEngine;
+using UnityEngine.Events;
 namespace _Scripts
 {
     /// <summary>
@@ -21,7 +22,7 @@ namespace _Scripts
         [SerializeField] private float tapTimeoutDuration = 0.0035f;
 
         [Tooltip("The maximum distance the pointer can move for a tap to be considered valid.")]
-        [SerializeField] private float tapDistanceLimit = 0.1f;
+        [SerializeField] private float tapDistanceLimit = 0.008f;
 
         private bool isGestureActive = false;
         private bool tapInvalid = false;
@@ -43,7 +44,7 @@ namespace _Scripts
         [SerializeField] private float longPressDuration = 0.4f;
 
         [Tooltip("The maximum distance the pointer can move for a long press to be considered valid.")]
-        [SerializeField] private float longPressDistanceLimit = 0.1f;
+        [SerializeField] private float longPressDistanceLimit = 0.01f;
 
         [Tooltip("The duration after which a long press gesture times out if not completed. ")]
         [SerializeField] private float longPressTimeoutDuration = 0.05f;
@@ -53,6 +54,17 @@ namespace _Scripts
         private bool longPressTriggered = false;
         private IHPUIInteractable currentLongPressInteractable = null;
         private Coroutine longPressTimeoutCoroutine;
+
+        [Header("Flick Event Parameters")]
+
+        [SerializeField] private float flickMinDistance = 0.09f;
+        [SerializeField] private float flickMaxDuration = 0.2f;
+        [SerializeField] private float flickTimeout = 0.2f;
+
+        private bool flickCandidateActive = false;
+        private IHPUIInteractable flickInitialInteractable = null;
+        private bool flickDetectionComplete = false;
+        private Coroutine flickTimeoutRoutine;
 
         private HPUIBaseInteractable[] interactables;
         #endregion
@@ -89,6 +101,13 @@ namespace _Scripts
             get => longPressEvent;
             set => longPressEvent = value;
         }
+
+        [SerializeField] private HPUIFlickEvent flickEvent = new HPUIFlickEvent();
+        public HPUIFlickEvent FlickEvent
+        {
+            get => flickEvent;
+            set => flickEvent = value;
+        }
         #endregion
 
         [SerializeField] private bool verboseLogging = false;
@@ -105,6 +124,7 @@ namespace _Scripts
             {
                 interactable.GestureEvent.AddListener(OnTap);
                 interactable.GestureEvent.AddListener(OnLongPress);
+                interactable.GestureEvent.AddListener(DetectFlick);
             }
         }
 
@@ -114,6 +134,7 @@ namespace _Scripts
             {
                 interactable.GestureEvent.RemoveListener(OnTap);
                 interactable.GestureEvent.RemoveListener(OnLongPress);
+                interactable.GestureEvent.RemoveListener(DetectFlick);
             }
         }
         #endregion
@@ -160,14 +181,13 @@ namespace _Scripts
             // checking if the duration is greater than the minimum duration
             // the total distance and total magnitude is lesser than the distance tapDistanceLimit
             if (args.TimeDelta < tapEventDuration &&
-                args.CumulativeDirection.magnitude < tapDistanceLimit &&
-                args.CumulativeDistance < tapDistanceLimit)
+                args.CumulativeDirection.magnitude < tapDistanceLimit)
             {
                 HandleTapCandidate(args);
             }
             else if (verboseLogging)
             {
-                Debug.Log($"<b><color=#03f4fc>Tap</color></b> was <color=red><b>rejected</b></color>! \n TapInvalid: {tapInvalid} \n Duration: {args.TimeDelta}, \n Cumulative Direction: {args.CumulativeDirection.magnitude}, \n Cumulative Distance: {args.CumulativeDistance}");
+                Debug.Log($"<b><color=#03f4fc>Tap</color></b> was <color=red><b>rejected</b></color>! \n TapInvalid: {tapInvalid} \n Duration: {args.TimeDelta}, \n Cumulative Direction: {args.CumulativeDirection.magnitude}");
             }
             ResetTap();
         }
@@ -200,7 +220,10 @@ namespace _Scripts
                 lastTapInteractable = null;
 
                 DoubleTapEvent?.Invoke(args);
-                if (verboseLogging) Debug.Log($"<b><color=#ffcc00>Double Tap</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
+                if (verboseLogging)
+                {
+                    Debug.Log($"<b><color=#ffcc00>Double Tap</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
+                }
             }
             else
             {
@@ -228,7 +251,11 @@ namespace _Scripts
                 lastTapInteractable = null;
 
                 TapEvent?.Invoke(args);
-                if (verboseLogging) Debug.Log($"<b><color=#03f4fc>Tap</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
+                if (verboseLogging)
+                {
+                    Debug.Log($"<b><color=#ffcc00>Double Tap</color></b> was <color=red><b>rejected</b></color>! \n TapInvalid: {tapInvalid} \n Waiting for Second Tap {waitingForSecondTap} \n Duration: {args.TimeDelta}, \n Cumulative Direction: {args.CumulativeDirection.magnitude}");
+                    Debug.Log($"<b><color=#03f4fc>Tap</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
+                }
             }
         }
         #endregion
@@ -260,8 +287,7 @@ namespace _Scripts
             if (!longPressTriggered &&
                 isLongPressGestureActive &&
                 args.TimeDelta > longPressDuration &&
-                args.CumulativeDirection.magnitude < longPressDistanceLimit &&
-                args.CumulativeDistance < longPressDistanceLimit)
+                args.CumulativeDirection.magnitude < longPressDistanceLimit)
             {
                 longPressTriggered = true;
                 LongPressEvent?.Invoke(args);
@@ -269,7 +295,7 @@ namespace _Scripts
             }
 
             if (longPressTimeoutCoroutine != null) StopCoroutine(longPressTimeoutCoroutine);
-            if (!longPressInvalid) longPressTimeoutCoroutine = StartCoroutine(LongPressTimer(args, longPressTimeoutDuration));
+            if (!longPressInvalid) longPressTimeoutCoroutine = StartCoroutine(LongPressTimer(args, longPressTimeoutDuration, longPressDuration));
         }
 
         /// <summary>
@@ -278,10 +304,13 @@ namespace _Scripts
         /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
         /// <param name="longPressTimeoutDuration">The duration after which a long press gesture times out.</param>
         /// <returns>An IEnumerator for the coroutine.</returns>
-        private IEnumerator LongPressTimer(HPUIGestureEventArgs args, float longPressTimeoutDuration)
+        private IEnumerator LongPressTimer(HPUIGestureEventArgs args, float longPressTimeoutDuration, float longPressDuration)
         {
             yield return new WaitForSeconds(longPressTimeoutDuration);
-            if (verboseLogging) Debug.Log($"<b><color=#5dff52>Long Press</color></b> was <color=red><b>rejected</b></color>! \n longPressInvalid: {tapInvalid} \n Duration: {args.TimeDelta}, \n Cumulative Direction: {args.CumulativeDirection.magnitude}, \n Cumulative Distance: {args.CumulativeDistance}");
+            if (verboseLogging && args.TimeDelta < longPressDuration)
+            {
+                Debug.Log($"<b><color=#5dff52>Long Press</color></b> was <color=red><b>rejected</b></color>! \n longPressInvalid: {tapInvalid} \n Duration: {args.TimeDelta}, \n Cumulative Direction: {args.CumulativeDirection.magnitude}");
+            }
             ResetLongPress();
         }
 
@@ -296,6 +325,47 @@ namespace _Scripts
             currentLongPressInteractable = null;
         }
         #endregion
+
+        private void DetectFlick(HPUIGestureEventArgs args)
+        {
+            if (!flickCandidateActive)
+            {
+                flickCandidateActive = true;
+                flickInitialInteractable = args.interactableObject;
+                return;
+            }
+
+            if (!flickDetectionComplete && args.TimeDelta > flickMaxDuration)
+            {
+                flickDetectionComplete = true;
+                Debug.Log($"<b><color=#ff4dff>Flick</color></b> was <color=red><b>rejected</b></color>. Cumulative direction: {args.CumulativeDirection.magnitude}, Time: {args.TimeDelta}");
+            }
+
+            if (!flickDetectionComplete && args.CumulativeDirection.magnitude >= flickMinDistance)
+            {
+                Vector2 direction = args.CumulativeDirection.normalized;
+
+                FlickEvent?.Invoke(args, flickInitialInteractable, direction);
+
+                if (verboseLogging)
+                {
+                    Debug.Log($"<b><color=#ff4dff>Flick</color></b> on {flickInitialInteractable.transform.name}; with direction: {direction}");
+                }
+
+                flickDetectionComplete = true;
+            }
+
+            if (flickTimeoutRoutine != null) StopCoroutine(flickTimeoutRoutine);
+            flickTimeoutRoutine = StartCoroutine(FlickReset(flickTimeout));
+        }
+
+        private IEnumerator FlickReset(float flickTimeout)
+        {
+            yield return new WaitForSeconds(flickTimeout);
+            flickDetectionComplete = false;
+            flickInitialInteractable = null;
+            flickCandidateActive = false;
+        }
     }
 
     /// <summary>
@@ -320,5 +390,9 @@ namespace _Scripts
     /// </summary>
     [Serializable]
     public class HPUILongPressEvent : HPUIGestureEvent
+    { }
+
+    [Serializable]
+    public class HPUIFlickEvent : UnityEvent<HPUIGestureEventArgs, IHPUIInteractable, Vector2>
     { }
 }
