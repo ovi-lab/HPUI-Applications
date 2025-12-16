@@ -1,39 +1,121 @@
+using System.Collections;
 using ubco.ovilab.HPUI.Core.Interaction;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace _Scripts
 {
     public class NumpadButton : MonoBehaviour
     {
-        [SerializeField] private HPUIGestureDetector gestureDetector;
+        public UnityEvent<NumpadButton> OnTap;
+        public UnityEvent<NumpadButton> OnDoubleTap;
+        public bool DoubleTapMode = false;
+
+        [SerializeField] private string tapAction;
+        [SerializeField] private string doubleTapAction;
+        [SerializeField] private string longPressTapAction;
+
+        [SerializeField] private Material baseMat;
+        [SerializeField] private Material activeMat;
+        [SerializeField] private Material doubleTapBaseMat;
+        [SerializeField] private Material doubleTapActiveMat;
+        [SerializeField] private Material blankMat;
+
+        public string TapAction => tapAction;
+        public string DoubleTapAction => doubleTapAction;
+        public string LongPressTapAction => longPressTapAction;
+
+        private HPUIDiscreetGestureDetector gestureDetector;
+        private HPUIBaseInteractable baseInteractable;
+        private Coroutine setBaseMatRoutine;
+        private MeshRenderer meshRenderer;
 
         private void OnEnable()
         {
-            gestureDetector.TapEvent.AddListener(DoATap);
-            gestureDetector.DoubleTapEvent.AddListener(DoDoubleTap);
-            gestureDetector.LongPressEvent.AddListener(DoLongPress);
+            gestureDetector = GetComponent<HPUIDiscreetGestureDetector>();
+            baseInteractable = GetComponent<HPUIBaseInteractable>();
+            meshRenderer = transform.GetComponentInChildren<MeshRenderer>();
+
+            gestureDetector.OnTap.AddListener(OnTapRecieved);
+            gestureDetector.OnDoubleTap.AddListener(OnDoubleTapRecieved);
+
+            baseInteractable.GestureEvent.AddListener(OnGestureEvent);
         }
 
         private void OnDisable()
         {
-            gestureDetector.TapEvent.RemoveListener(DoATap);
-            gestureDetector.DoubleTapEvent.RemoveListener(DoDoubleTap);
-            gestureDetector.LongPressEvent.RemoveListener(DoLongPress);
+            gestureDetector.OnTap.RemoveListener(OnTapRecieved);
+            baseInteractable.GestureEvent.RemoveListener(OnGestureEvent);
         }
 
-        private void DoATap(HPUIGestureEventArgs args)
+        // private void Update()
+        // {
+        //     if (DoubleTapMode && string.IsNullOrEmpty(doubleTapAction))
+        //     {
+        //         gestureDetector.enabled = false;
+        //         meshRenderer.material = blankMat;
+        //     }
+        //     else
+        //     {
+        //         gestureDetector.enabled = true;
+        //         meshRenderer.material = baseMat;
+        //     }
+        // }
+
+        private void OnValidate()
         {
-            Debug.Log($"Got a tap for {args.interactableObject.transform.name}");
+            if (!Application.isPlaying)
+            {
+                if (!string.IsNullOrEmpty(tapAction))
+                {
+                    TryLoadMat(tapAction, ref baseMat);
+                    TryLoadMat($"{tapAction}_active", ref activeMat);
+                }
+
+                if (!string.IsNullOrEmpty(doubleTapAction))
+                {
+                    TryLoadMat(doubleTapAction, ref doubleTapBaseMat);
+                    TryLoadMat($"{doubleTapAction}_active", ref doubleTapActiveMat);
+                }
+            }
         }
 
-        private void DoDoubleTap(HPUIGestureEventArgs args)
+        private void TryLoadMat(string matName, ref Material target)
         {
-            Debug.Log($"Got a double tap for {args.interactableObject.transform.name}");
+            var mat = Resources.Load<Material>($"Numpad/Mats/{matName}");
+            if (mat != null)
+            {
+                target = mat;
+            }
         }
 
-        private void DoLongPress(HPUIGestureEventArgs args)
+        private void OnTapRecieved(HPUIGestureEventArgs args)
         {
-            Debug.Log($"Got a long press for {args.interactableObject.transform.name}");
+            OnTap?.Invoke(this);
+        }
+
+        private void OnDoubleTapRecieved(HPUIGestureEventArgs args)
+        {
+            OnDoubleTap?.Invoke(this);
+        }
+
+        private void OnGestureEvent(HPUIGestureEventArgs args)
+        {
+            SetActiveMat();
+        }
+
+        public void SetActiveMat()
+        {
+            meshRenderer.material = DoubleTapMode ? string.IsNullOrWhiteSpace(doubleTapAction) ? blankMat : doubleTapActiveMat : activeMat;
+
+            if (setBaseMatRoutine != null) StopCoroutine(setBaseMatRoutine);
+            setBaseMatRoutine = StartCoroutine(ResetButtonColor());
+        }
+
+        private IEnumerator ResetButtonColor()
+        {
+            yield return new WaitForSeconds(0.2f);
+            meshRenderer.material = DoubleTapMode ? string.IsNullOrWhiteSpace(doubleTapAction) ? blankMat : doubleTapBaseMat : baseMat;
         }
     }
 }

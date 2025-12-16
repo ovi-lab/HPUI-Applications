@@ -44,6 +44,7 @@ namespace _Scripts.Utils
         /// </summary>
         private void OnValidate()
         {
+            FetchMr();
             ApplyColor();
         }
 

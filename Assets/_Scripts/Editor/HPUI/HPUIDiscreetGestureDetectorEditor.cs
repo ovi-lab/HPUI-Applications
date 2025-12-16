@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine.Events;
 using _Scripts;
 
-[CustomEditor(typeof(HPUIDiscreetGestureDetector))]
+[CustomEditor(typeof(HPUIDiscreetGestureDetector)), CanEditMultipleObjects]
 public class HPUIDiscreetGestureDetectorEditor : Editor
 {
     private bool showAdvanced = false;

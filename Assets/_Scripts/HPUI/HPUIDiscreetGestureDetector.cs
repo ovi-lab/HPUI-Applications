@@ -349,7 +349,10 @@ namespace _Scripts
             if (!flickDetectionComplete && args.TimeDelta > flickMaxDuration)
             {
                 flickDetectionComplete = true;
-                Debug.Log($"<b><color=#ff4dff>Flick</color></b> was <color=red><b>rejected</b></color>. Cumulative direction: {args.CumulativeDirection.magnitude}, Time: {args.TimeDelta}");
+                if (verboseLogging)
+                {
+                    Debug.Log($"<b><color=#ff4dff>Flick</color></b> was <color=red><b>rejected</b></color>. Cumulative direction: {args.CumulativeDirection.magnitude}, Time: {args.TimeDelta}");
+                }
             }
 
             if (!flickDetectionComplete && args.CumulativeDirection.magnitude >= flickMinDistance)
