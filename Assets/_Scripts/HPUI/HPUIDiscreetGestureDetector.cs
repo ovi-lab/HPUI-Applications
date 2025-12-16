@@ -6,12 +6,63 @@ using UnityEngine.Events;
 namespace _Scripts
 {
     /// <summary>
-    /// Detects and manages various HPUI gestures such as Tap, Double Tap, and Long Press.
-    /// This script attaches to a GameObject and listens for gesture events from HPUI interactables
-    /// to process and dispatch specific gesture events.
+    /// Detects and manages various HPUI gestures such as Tap, Double Tap, Long Presses and Flicks.
+    /// This script attaches to a GameObject and listens for gesture events from the HPUI interactable
+    /// to process and dispatch specific gesture events. Intended for use with <see cref="HPUIBaseInteractable"/>
     /// </summary>
-    public class HPUIGestureDetector : MonoBehaviour
+    [RequireComponent(typeof(IHPUIInteractable))]
+    public class HPUIDiscreetGestureDetector : MonoBehaviour
     {
+        #region Events
+        [Header("Events")]
+
+        [Tooltip("Callback that is invoked when a tap gesture is detected.")]
+        [SerializeField] private HPUITapEvent onTap = new HPUITapEvent();
+
+        /// <summary>
+        /// Gets or sets the <see cref="HPUITapEvent"/> that is invoked when a tap gesture is detected.
+        /// </summary>
+        public HPUITapEvent OnTap
+        {
+            get => onTap;
+            set => onTap = value;
+        }
+
+        [Tooltip("Callback that is invoked when a double tap gesture is detected.")]
+        [SerializeField] private HPUIDoubleTapEvent onDoubleTap = new HPUIDoubleTapEvent();
+
+        /// <summary>
+        /// Gets or sets the <see cref="HPUIDoubleTapEvent"/> that is invoked when a double tap gesture is detected.
+        /// </summary>
+        public HPUIDoubleTapEvent OnDoubleTap
+        {
+            get => onDoubleTap;
+            set => onDoubleTap = value;
+        }
+
+        [Tooltip("Callback that is invoked when a long press gesture is detected.")]
+        [SerializeField] private HPUILongPressEvent onLongPress = new HPUILongPressEvent();
+        /// <summary>
+        /// Gets or sets the <see cref="HPUILongPressEvent"/> that is invoked when a long press gesture is detected.
+        /// </summary>
+        public HPUILongPressEvent OnLongPress
+        {
+            get => onLongPress;
+            set => onLongPress = value;
+        }
+
+        [Tooltip("Callback that is invoked when a flick gesture is detected.")]
+        [SerializeField] private HPUIFlickEvent onFlick = new HPUIFlickEvent();
+        /// <summary>
+        /// Gets or sets the <see cref="HPUIFlickEvent"/> that is invoked when a flick gesture is detected.
+        /// </summary>
+        public HPUIFlickEvent OnFlick
+        {
+            get => onFlick;
+            set => onFlick = value;
+        }
+        #endregion
+
         #region Parameters
         [Header("Tap Event Parameters")]
 
@@ -26,7 +77,6 @@ namespace _Scripts
 
         private bool isGestureActive = false;
         private bool tapInvalid = false;
-        private IHPUIInteractable currentInteractable = null;
         private Coroutine tapTimeoutCoroutine;
 
         [Header("Double Tap Event Parameters")]
@@ -36,7 +86,6 @@ namespace _Scripts
 
         private bool waitingForSecondTap = false;
         private Coroutine singleTapCoroutine;
-        private IHPUIInteractable lastTapInteractable;
 
         [Header("Long Press Event Parameters")]
 
@@ -52,92 +101,54 @@ namespace _Scripts
         private bool isLongPressGestureActive = false;
         private bool longPressInvalid = false;
         private bool longPressTriggered = false;
-        private IHPUIInteractable currentLongPressInteractable = null;
         private Coroutine longPressTimeoutCoroutine;
 
         [Header("Flick Event Parameters")]
 
+        [Tooltip("The minimum distance the pointer must move for a flick gesture to be detected.")]
         [SerializeField] private float flickMinDistance = 0.09f;
+
+        [Tooltip("The maximum duration allowed for the pointer movement to be considered a flick.")]
         [SerializeField] private float flickMaxDuration = 0.2f;
+
+        [Tooltip("The duration after which the flick detection state is reset.")]
         [SerializeField] private float flickTimeout = 0.2f;
 
         private bool flickCandidateActive = false;
-        private IHPUIInteractable flickInitialInteractable = null;
         private bool flickDetectionComplete = false;
         private Coroutine flickTimeoutRoutine;
 
-        private HPUIBaseInteractable[] interactables;
+        private IHPUIInteractable interactable;
         #endregion
 
-        #region Events
-        [Header("Events")]
-
-        [SerializeField] private HPUITapEvent tapEvent = new HPUITapEvent();
         /// <summary>
-        /// Gets or sets the <see cref="HPUITapEvent"/> that is invoked when a tap gesture is detected.
+        /// If true, enables verbose logging to the console for gesture detection processes.
         /// </summary>
-        public HPUITapEvent TapEvent
-        {
-            get => tapEvent;
-            set => tapEvent = value;
-        }
-
-        [SerializeField] private HPUIDoubleTapEvent doubleTapEvent = new HPUIDoubleTapEvent();
-        /// <summary>
-        /// Gets or sets the <see cref="HPUIDoubleTapEvent"/> that is invoked when a double tap gesture is detected.
-        /// </summary>
-        public HPUIDoubleTapEvent DoubleTapEvent
-        {
-            get => doubleTapEvent;
-            set => doubleTapEvent = value;
-        }
-
-        [SerializeField] private HPUILongPressEvent longPressEvent = new HPUILongPressEvent();
-        /// <summary>
-        /// Gets or sets the <see cref="HPUILongPressEvent"/> that is invoked when a long press gesture is detected.
-        /// </summary>
-        public HPUILongPressEvent LongPressEvent
-        {
-            get => longPressEvent;
-            set => longPressEvent = value;
-        }
-
-        [SerializeField] private HPUIFlickEvent flickEvent = new HPUIFlickEvent();
-        public HPUIFlickEvent FlickEvent
-        {
-            get => flickEvent;
-            set => flickEvent = value;
-        }
-        #endregion
-
         [SerializeField] private bool verboseLogging = false;
 
         #region UnityEvents
-        /// <summary>
-        /// Called when the object becomes enabled and active.
-        /// Subscribes to gesture events from all <see cref="HPUIBaseInteractable"/> objects in the scene.
-        /// </summary>
         private void OnEnable()
         {
-            interactables = UnityEngine.Object.FindObjectsByType<HPUIBaseInteractable>(FindObjectsSortMode.None);
-            foreach (var interactable in interactables)
-            {
-                interactable.GestureEvent.AddListener(OnTap);
-                interactable.GestureEvent.AddListener(OnLongPress);
-                interactable.GestureEvent.AddListener(DetectFlick);
-            }
+            interactable = GetComponent<IHPUIInteractable>();
+            interactable.GestureEvent.AddListener(DetectGesture);
         }
 
         private void OnDisable()
         {
-            foreach (var interactable in interactables)
-            {
-                interactable.GestureEvent.RemoveListener(OnTap);
-                interactable.GestureEvent.RemoveListener(OnLongPress);
-                interactable.GestureEvent.RemoveListener(DetectFlick);
-            }
+            interactable.GestureEvent.RemoveListener(DetectGesture);
         }
         #endregion
+
+        /// <summary>
+        /// Sends gesture argument information to all individual detection modules
+        /// </summary>
+        /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
+        private void DetectGesture(HPUIGestureEventArgs args)
+        {
+            DetectTap(args);
+            DetectLongPress(args);
+            DetectFlick(args);
+        }
 
         #region Tap Logic
         /// <summary>
@@ -146,11 +157,11 @@ namespace _Scripts
         /// and initiates the tap timeout coroutine.
         /// </summary>
         /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
-        private void OnTap(HPUIGestureEventArgs args)
+        private void DetectTap(HPUIGestureEventArgs args)
         {
             if (isGestureActive)
             {
-                if (args.interactableObject != currentInteractable)
+                if (args.interactableObject != interactable)
                 {
                     tapInvalid = true;
                     ResetTap();
@@ -158,7 +169,6 @@ namespace _Scripts
             }
             else
             {
-                currentInteractable = args.interactableObject;
                 isGestureActive = true;
             }
 
@@ -168,18 +178,19 @@ namespace _Scripts
 
         /// <summary>
         /// Coroutine that waits for a specified timeout duration to determine if a tap gesture is valid.
-        /// If valid, it calls <see cref="HandleTapCandidate"/>.
+        /// If the gesture's duration and movement are within the defined limits, it proceeds to call <see cref="HandleTapCandidate"/>.
+        /// Otherwise, the tap is rejected.
         /// </summary>
         /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
-        /// <param name="tapEventDuration">The maximum duration for a valid tap event.</param>
-        /// <param name="tapTimeoutDuration">The duration after which a tap gesture times out.</param>
-        /// <param name="tapDistanceLimit">The maximum distance the pointer can move for a tap to be considered valid.</param>
+        /// <param name="tapEventDuration">The maximum allowed duration for the tap event.</param>
+        /// <param name="tapTimeoutDuration">The timeout period before evaluating the tap gesture.</param>
+        /// <param name="tapDistanceLimit">The maximum allowed pointer movement for a valid tap.</param>
         /// <returns>An IEnumerator for the coroutine.</returns>
         private IEnumerator TapTimeout(HPUIGestureEventArgs args, float tapEventDuration, float tapTimeoutDuration, float tapDistanceLimit)
         {
             yield return new WaitForSeconds(tapTimeoutDuration);
-            // checking if the duration is greater than the minimum duration
-            // the total distance and total magnitude is lesser than the distance tapDistanceLimit
+            // Check if the gesture duration is within the tap event duration and if the cumulative pointer movement
+            // is within the tap distance limit.
             if (args.TimeDelta < tapEventDuration &&
                 args.CumulativeDirection.magnitude < tapDistanceLimit)
             {
@@ -199,7 +210,6 @@ namespace _Scripts
         {
             isGestureActive = false;
             tapInvalid = false;
-            currentInteractable = null;
         }
 
         /// <summary>
@@ -210,16 +220,15 @@ namespace _Scripts
         private void HandleTapCandidate(HPUIGestureEventArgs args)
         {
             if (waitingForSecondTap &&
-                lastTapInteractable == args.interactableObject)
+                interactable == args.interactableObject)
             {
                 // Double tap confirmed
                 if (singleTapCoroutine != null)
                     StopCoroutine(singleTapCoroutine);
 
                 waitingForSecondTap = false;
-                lastTapInteractable = null;
 
-                DoubleTapEvent?.Invoke(args);
+                OnDoubleTap?.Invoke(args);
                 if (verboseLogging)
                 {
                     Debug.Log($"<b><color=#ffcc00>Double Tap</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
@@ -229,15 +238,13 @@ namespace _Scripts
             {
                 // First tap – wait to see if a second tap occurs
                 waitingForSecondTap = true;
-                lastTapInteractable = args.interactableObject;
-
                 singleTapCoroutine = StartCoroutine(SingleTapRoutine(args));
             }
         }
 
         /// <summary>
-        /// Coroutine that waits for a specified interval to determine if a single tap should be invoked.
-        /// If no second tap occurs within the <see cref="doubleTapInterval"/>, the single tap event is invoked.
+        /// Coroutine that waits for the <see cref="doubleTapInterval"/> to determine if a single tap should be invoked.
+        /// If a second tap does not occur within this interval, the <see cref="OnTap"/> event is invoked.
         /// </summary>
         /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
         /// <returns>An IEnumerator for the coroutine.</returns>
@@ -248,9 +255,8 @@ namespace _Scripts
             if (waitingForSecondTap)
             {
                 waitingForSecondTap = false;
-                lastTapInteractable = null;
 
-                TapEvent?.Invoke(args);
+                OnTap?.Invoke(args);
                 if (verboseLogging)
                 {
                     Debug.Log($"<b><color=#ffcc00>Double Tap</color></b> was <color=red><b>rejected</b></color>! \n TapInvalid: {tapInvalid} \n Waiting for Second Tap {waitingForSecondTap} \n Duration: {args.TimeDelta}, \n Cumulative Direction: {args.CumulativeDirection.magnitude}");
@@ -262,16 +268,16 @@ namespace _Scripts
 
         #region Long Press Logic
         /// <summary>
-        /// Handles incoming long press gesture events.
-        /// Determines if a long press is triggered based on duration and distance limits,
-        /// and invokes the long press event.
+        /// Handles incoming long press gesture events, detecting if the gesture meets the criteria for a long press.
+        /// If the pointer is held down for longer than <see cref="longPressDuration"/> and moves less than <see cref="longPressDistanceLimit"/>,
+        /// the <see cref="OnLongPress"/> event is invoked.
         /// </summary>
         /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
-        private void OnLongPress(HPUIGestureEventArgs args)
+        private void DetectLongPress(HPUIGestureEventArgs args)
         {
             if (isLongPressGestureActive)
             {
-                if (args.interactableObject != currentLongPressInteractable)
+                if (args.interactableObject != interactable)
                 {
                     longPressInvalid = true;
                     ResetLongPress();
@@ -279,7 +285,6 @@ namespace _Scripts
             }
             else
             {
-                currentLongPressInteractable = args.interactableObject;
                 isLongPressGestureActive = true;
                 longPressTriggered = false;
             }
@@ -290,7 +295,7 @@ namespace _Scripts
                 args.CumulativeDirection.magnitude < longPressDistanceLimit)
             {
                 longPressTriggered = true;
-                LongPressEvent?.Invoke(args);
+                OnLongPress?.Invoke(args);
                 if (verboseLogging) Debug.Log($"<b><color=#5dff52>Long Press</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
             }
 
@@ -299,10 +304,12 @@ namespace _Scripts
         }
 
         /// <summary>
-        /// Coroutine that waits for a specified timeout duration to reset the long press state.
+        /// Coroutine that waits for a specified timeout duration before resetting the long press state.
+        /// This ensures that the long press detection is properly reset after a potential long press or its rejection.
         /// </summary>
         /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
-        /// <param name="longPressTimeoutDuration">The duration after which a long press gesture times out.</param>
+        /// <param name="longPressTimeoutDuration">The duration after which the long press gesture state is evaluated for reset.</param>
+        /// <param name="longPressDuration">The minimum duration for a long press gesture to be triggered (used for logging).</param>
         /// <returns>An IEnumerator for the coroutine.</returns>
         private IEnumerator LongPressTimer(HPUIGestureEventArgs args, float longPressTimeoutDuration, float longPressDuration)
         {
@@ -322,16 +329,20 @@ namespace _Scripts
             isLongPressGestureActive = false;
             longPressInvalid = false;
             longPressTriggered = false;
-            currentLongPressInteractable = null;
         }
         #endregion
 
+        #region Flick Logic
+        /// <summary>
+        /// Handles incoming gesture events to detect a flick gesture.
+        /// A flick is detected if the pointer moves a minimum distance within a maximum duration.
+        /// </summary>
+        /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
         private void DetectFlick(HPUIGestureEventArgs args)
         {
             if (!flickCandidateActive)
             {
                 flickCandidateActive = true;
-                flickInitialInteractable = args.interactableObject;
                 return;
             }
 
@@ -345,11 +356,11 @@ namespace _Scripts
             {
                 Vector2 direction = args.CumulativeDirection.normalized;
 
-                FlickEvent?.Invoke(args, flickInitialInteractable, direction);
+                OnFlick?.Invoke(direction, args);
 
                 if (verboseLogging)
                 {
-                    Debug.Log($"<b><color=#ff4dff>Flick</color></b> on {flickInitialInteractable.transform.name}; with direction: {direction}");
+                    Debug.Log($"<b><color=#ff4dff>Flick</color></b> on {interactable.transform.name}; with direction: {direction}");
                 }
 
                 flickDetectionComplete = true;
@@ -363,9 +374,9 @@ namespace _Scripts
         {
             yield return new WaitForSeconds(flickTimeout);
             flickDetectionComplete = false;
-            flickInitialInteractable = null;
             flickCandidateActive = false;
         }
+        #endregion
     }
 
     /// <summary>
@@ -392,7 +403,11 @@ namespace _Scripts
     public class HPUILongPressEvent : HPUIGestureEvent
     { }
 
+    /// <summary>
+    /// Represents a flick gesture event within the HPUI system.
+    /// This event provides the direction of the flick as a <see cref="Vector2"/> and the <see cref="HPUIGestureEventArgs"/>.
+    /// </summary>
     [Serializable]
-    public class HPUIFlickEvent : UnityEvent<HPUIGestureEventArgs, IHPUIInteractable, Vector2>
+    public class HPUIFlickEvent : UnityEvent<Vector2, HPUIGestureEventArgs>
     { }
 }
