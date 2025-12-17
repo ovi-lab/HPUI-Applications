@@ -1,3 +1,4 @@
+using System;
 using _Scripts.Utils;
 using UnityEngine;
 
@@ -142,6 +143,11 @@ namespace _Scripts.ColorPicker
             {
                 hotSwap.SetColor(targetColor);
             }
+        }
+
+        public void SetMode(string mode)
+        {
+            currentMode = Enum.Parse<ColorPickerMode>(mode);
         }
     }
 }
