@@ -17,8 +17,8 @@ namespace _Scripts.Utils
 
         private void Update()
         {
-            transform.forward = transform.position - lookAtTarget.position;
-            transform.position = positionFilter.Filter(followTarget.position);
+            if (lookAtTarget != null) transform.forward = transform.position - lookAtTarget.position;
+            if (followTarget != null) transform.position = positionFilter.Filter(followTarget.position);
         }
     }
 }

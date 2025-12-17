@@ -21,7 +21,7 @@ namespace _Scripts.Utils
         /// <summary>
         /// The shader property ID for the main color.
         /// </summary>
-        private static readonly int ShaderProp = Shader.PropertyToID("_Color");
+        private static readonly int ShaderProp = Shader.PropertyToID("_BaseColor");
 
         private MaterialPropertyBlock mpb;
 
