@@ -1639,7 +1639,7 @@ MonoBehaviour:
   interactableStateEvent:
     m_PersistentCalls:
       m_Calls: []
-  x_size: 0.075
+  x_size: 0.065
   y_size: 0.015
   y_divisions: 10
   offset: 0.005
@@ -1709,7 +1709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
   slider: {fileID: 1550401467}
-  minMax: {x: 0.05, y: -0.05}
+  minMax: {x: 0.04, y: -0.04}
   alongX: 1
   targetVal: 0
 --- !u!1 &212035626
@@ -2009,7 +2009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
   slider: {fileID: 74948823}
-  minMax: {x: 0.05, y: -0.05}
+  minMax: {x: 0.04, y: -0.04}
   alongX: 0
   targetVal: 0
 --- !u!1 &218195894
@@ -3912,7 +3912,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
   slider: {fileID: 719712454}
-  minMax: {x: 0.05, y: -0.05}
+  minMax: {x: 0.04, y: -0.04}
   alongX: 0
   targetVal: 0
 --- !u!1 &389957557
@@ -5647,7 +5647,7 @@ Transform:
   m_GameObject: {fileID: 599809856}
   serializedVersion: 2
   m_LocalRotation: {x: -0.027831465, y: 0.027430812, z: 0.011562139, w: 0.99916935}
-  m_LocalPosition: {x: -0.056, y: -0.003, z: -0.082}
+  m_LocalPosition: {x: -0.057, y: 0.033, z: 0.033}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7074,7 +7074,7 @@ MonoBehaviour:
   interactableStateEvent:
     m_PersistentCalls:
       m_Calls: []
-  x_size: 0.075
+  x_size: 0.065
   y_size: 0.015
   y_divisions: 10
   offset: 0.005
@@ -7144,7 +7144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
   slider: {fileID: 782228335}
-  minMax: {x: -0.05, y: 0.05}
+  minMax: {x: -0.04, y: 0.04}
   alongX: 1
   targetVal: 0
 --- !u!1 &792712936
@@ -10119,7 +10119,7 @@ MonoBehaviour:
   interactableStateEvent:
     m_PersistentCalls:
       m_Calls: []
-  x_size: 0.075
+  x_size: 0.065
   y_size: 0.015
   y_divisions: 10
   offset: 0.005
@@ -10189,7 +10189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
   slider: {fileID: 177245820}
-  minMax: {x: -0.05, y: 0.05}
+  minMax: {x: -0.04, y: 0.04}
   alongX: 1
   targetVal: 0
 --- !u!1 &1224329005
@@ -13287,7 +13287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
   slider: {fileID: 1129239083}
-  minMax: {x: 0.05, y: -0.05}
+  minMax: {x: 0.04, y: -0.04}
   alongX: 0
   targetVal: 0
 --- !u!1 &1679486433

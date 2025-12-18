@@ -31,7 +31,7 @@ namespace _Scripts.ColorPicker
 
         private void UpdateSliderHandle(HPUIGestureEventArgs args)
         {
-            targetVal = Mathf.InverseLerp(minMax.x, minMax.y, alongX ? args.Position.x : args.Position.y);
+            targetVal = Mathf.Clamp01(Mathf.InverseLerp(minMax.x, minMax.y, alongX ? args.Position.x : args.Position.y));
             slider.TargetValue = targetVal;
         }
     }
