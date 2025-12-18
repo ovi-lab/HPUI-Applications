@@ -1495,6 +1495,7 @@ GameObject:
   - component: {fileID: 197271387}
   - component: {fileID: 197271386}
   - component: {fileID: 197271385}
+  - component: {fileID: 197271388}
   m_Layer: 0
   m_Name: H
   m_TagString: Untagged
@@ -1695,6 +1696,22 @@ MonoBehaviour:
   continuousSurfaceCreatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &197271388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197271383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  slider: {fileID: 1550401467}
+  minMax: {x: 0.05, y: -0.05}
+  alongX: 1
+  targetVal: 0
 --- !u!1 &212035626
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,6 +1780,7 @@ GameObject:
   - component: {fileID: 212264151}
   - component: {fileID: 212264153}
   - component: {fileID: 212264152}
+  - component: {fileID: 212264154}
   m_Layer: 0
   m_Name: R
   m_TagString: Untagged
@@ -1978,6 +1996,22 @@ MonoBehaviour:
   ui: {fileID: 443544194}
   windowSize: 100
   maeThreshold: 0.005
+--- !u!114 &212264154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212264149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  slider: {fileID: 74948823}
+  minMax: {x: 0.05, y: -0.05}
+  alongX: 0
+  targetVal: 0
 --- !u!1 &218195894
 GameObject:
   m_ObjectHideFlags: 0
@@ -3288,7 +3322,7 @@ GameObject:
   - component: {fileID: 357771017}
   - component: {fileID: 357771016}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: ColorTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3348,7 +3382,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: b446458ef93d5a7419e281b96d0cd114, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3649,6 +3683,7 @@ GameObject:
   - component: {fileID: 385535701}
   - component: {fileID: 385535700}
   - component: {fileID: 385535699}
+  - component: {fileID: 385535702}
   m_Layer: 0
   m_Name: B
   m_TagString: Untagged
@@ -3864,6 +3899,22 @@ MonoBehaviour:
   continuousSurfaceCreatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &385535702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385535697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  slider: {fileID: 719712454}
+  minMax: {x: 0.05, y: -0.05}
+  alongX: 0
+  targetVal: 0
 --- !u!1 &389957557
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,7 +3927,7 @@ GameObject:
   - component: {fileID: 389957560}
   - component: {fileID: 389957559}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: ColorTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6472,7 +6523,7 @@ GameObject:
   - component: {fileID: 741729478}
   - component: {fileID: 741729477}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: ColorTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6532,7 +6583,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: b446458ef93d5a7419e281b96d0cd114, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6879,6 +6930,7 @@ GameObject:
   - component: {fileID: 791696289}
   - component: {fileID: 791696288}
   - component: {fileID: 791696287}
+  - component: {fileID: 791696290}
   m_Layer: 0
   m_Name: V
   m_TagString: Untagged
@@ -7079,6 +7131,22 @@ MonoBehaviour:
   continuousSurfaceCreatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &791696290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791696285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  slider: {fileID: 782228335}
+  minMax: {x: -0.05, y: 0.05}
+  alongX: 1
+  targetVal: 0
 --- !u!1 &792712936
 GameObject:
   m_ObjectHideFlags: 0
@@ -7898,7 +7966,7 @@ Camera:
   far clip plane: 1
   field of view: 60
   orthographic: 1
-  orthographic size: 0.79
+  orthographic size: 0.75
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -8374,7 +8442,7 @@ GameObject:
   - component: {fileID: 956941813}
   - component: {fileID: 956941812}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: ColorTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8476,7 +8544,7 @@ Transform:
   m_GameObject: {fileID: 965616684}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.925}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8977,7 +9045,7 @@ GameObject:
   - component: {fileID: 1053504047}
   - component: {fileID: 1053504046}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: ColorTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9907,6 +9975,7 @@ GameObject:
   - component: {fileID: 1200800459}
   - component: {fileID: 1200800458}
   - component: {fileID: 1200800457}
+  - component: {fileID: 1200800460}
   m_Layer: 0
   m_Name: S
   m_TagString: Untagged
@@ -10107,6 +10176,22 @@ MonoBehaviour:
   continuousSurfaceCreatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1200800460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200800455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  slider: {fileID: 177245820}
+  minMax: {x: -0.05, y: 0.05}
+  alongX: 1
+  targetVal: 0
 --- !u!1 &1224329005
 GameObject:
   m_ObjectHideFlags: 0
@@ -11824,7 +11909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39234513de22ae84096e71dfb1d0ee06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.ColorWheel
-  currentMode: 1
+  currentMode: 0
   rSlider: {fileID: 74948823}
   gSlider: {fileID: 1129239083}
   bSlider: {fileID: 719712454}
@@ -11832,6 +11917,9 @@ MonoBehaviour:
   sSlider: {fileID: 177245820}
   vSlider: {fileID: 782228335}
   targetObject: {fileID: 2022371712}
+  sliderBackgrounds:
+  - {fileID: 1053504046}
+  - {fileID: 956941812}
   targetColor: {r: 0.292916, g: 1, b: 0.39296356, a: 1}
 --- !u!1 &1550401465
 GameObject:
@@ -12970,6 +13058,7 @@ GameObject:
   - component: {fileID: 1667150568}
   - component: {fileID: 1667150567}
   - component: {fileID: 1667150566}
+  - component: {fileID: 1667150569}
   m_Layer: 0
   m_Name: G
   m_TagString: Untagged
@@ -13185,6 +13274,22 @@ MonoBehaviour:
   continuousSurfaceCreatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1667150569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667150564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  slider: {fileID: 1129239083}
+  minMax: {x: 0.05, y: -0.05}
+  alongX: 0
+  targetVal: 0
 --- !u!1 &1679486433
 GameObject:
   m_ObjectHideFlags: 0
@@ -13409,7 +13514,7 @@ Camera:
   far clip plane: 1
   field of view: 60
   orthographic: 1
-  orthographic size: 0.79
+  orthographic size: 0.75
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -13649,7 +13754,7 @@ Camera:
   far clip plane: 1
   field of view: 60
   orthographic: 1
-  orthographic size: 0.79
+  orthographic size: 0.75
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -15025,7 +15130,7 @@ GameObject:
   - component: {fileID: 1999363825}
   - component: {fileID: 1999363824}
   m_Layer: 6
-  m_Name: Plane
+  m_Name: ColorTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15085,7 +15190,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: b446458ef93d5a7419e281b96d0cd114, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

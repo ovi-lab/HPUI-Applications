@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Scripts.Utils;
 using UnityEngine;
 
@@ -36,6 +37,9 @@ namespace _Scripts.ColorPicker
         [Header("Target")]
         [SerializeField]
         private GameObject targetObject;
+
+        [Header("Extras")]
+        [SerializeField] private List<Renderer> sliderBackgrounds;
 
         public GameObject TargetObject
         {
@@ -142,6 +146,14 @@ namespace _Scripts.ColorPicker
             if (hotSwap != null)
             {
                 hotSwap.SetColor(targetColor);
+            }
+
+            Color.RGBToHSV(targetColor, out float h, out _, out _);
+            Color hueOnlyColor = Color.HSVToRGB(h, 1f, 1f);
+
+            foreach (var slider in sliderBackgrounds)
+            {
+                slider.material.SetColor("_EndColor", hueOnlyColor);
             }
         }
 
