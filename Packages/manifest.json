@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.meta.xr.sdk.all": "83.0.3",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.9",
     "com.unity.collab-proxy": "2.10.0",
@@ -13,6 +14,7 @@
     "com.unity.timeline": "1.8.9",
     "com.unity.ugui": "2.0.0",
     "com.unity.visualscripting": "1.9.8",
+    "com.unity.xr.openxr": "1.15.1",
     "com.v0lt.editor-attributes": "https://github.com/v0lt13/EditorAttributes.git",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
