@@ -88,3 +88,6 @@ crashlytics-build.properties
 
 Assets/TextMesh Pro
 Assets/StreamingAssets.meta
+TempAssembly.dll
+RuntimeActionBindings.json
+.utmp
