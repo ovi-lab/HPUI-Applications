@@ -10,6 +10,11 @@ namespace _Scripts
     {
         [SerializeField] private List<NumpadButton> buttons;
         [SerializeField] private TextMeshProUGUI numpadText;
+        [SerializeField] private SkinnedMeshRenderer mr;
+        [SerializeField] private Material baseMat;
+        [SerializeField] private Material transparentMat;
+
+        private bool isHandTransparent = false;
 
         private void OnEnable()
         {
@@ -37,6 +42,10 @@ namespace _Scripts
                         break;
                     case "reverse":
                         numpadText.text = new String(numpadText.text.ToCharArray().Reverse().ToArray());
+                        break;
+                    case "cube":
+                        mr.material = isHandTransparent ? baseMat : transparentMat;
+                        isHandTransparent = !isHandTransparent;
                         break;
                     default:
                         break;

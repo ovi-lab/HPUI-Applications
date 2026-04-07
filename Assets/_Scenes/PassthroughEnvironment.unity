@@ -1499,6 +1499,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 148779446}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!137 &154601348 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3249593465762087424, guid: 9be4c166b2ff0d14bbb444e856617e8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 492566750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &172059953
 GameObject:
   m_ObjectHideFlags: 0
@@ -5971,7 +5977,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   xrOrigin: {fileID: 0}
-  hmdPositionOffset: {x: 0, y: 0, z: 0}
+  hmdPositionOffset: {x: 0, y: -45, z: 0}
   hmdRotationOffset: {x: 0, y: 0, z: 0, w: 1}
   applyPosFilter: 1
   posFilterMinCutoff: 0.1
@@ -8031,6 +8037,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad
   buttons: []
   numpadText: {fileID: 1814528323}
+  mr: {fileID: 154601348}
+  baseMat: {fileID: -8693172909504858975, guid: 1f857fbd164c5b04198fade34cecefd0,
+    type: 3}
+  transparentMat: {fileID: 2100000, guid: cb11fa7fbb734cb43bc08c5a3c135572, type: 2}
 --- !u!114 &917190326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15177,12 +15187,12 @@ MonoBehaviour:
   DoubleTapMode: 0
   LongPressMode: 0
   tapAction: 4
-  doubleTapAction: 
+  doubleTapAction: cube
   longPressTapAction: L
   baseMat: {fileID: 2100000, guid: e07c02ef7c4244843b6789a5c3dd3e93, type: 2}
   activeMat: {fileID: 2100000, guid: 656e069949f5faf49ab7a2978b0ec79e, type: 2}
-  doubleTapBaseMat: {fileID: 0}
-  doubleTapActiveMat: {fileID: 0}
+  doubleTapBaseMat: {fileID: 2100000, guid: e62557efb8b191d4e9b08ef6594b075f, type: 2}
+  doubleTapActiveMat: {fileID: 2100000, guid: 6ab6c197ead337d44908b7602d7399e2, type: 2}
   longPressBaseMat: {fileID: 2100000, guid: 476fe7ba33b16564ba43d4dc99b4e3ff, type: 2}
   longPressActiveMat: {fileID: 2100000, guid: 6fabd905c77767049a33869ac11a29ba, type: 2}
   blankMat: {fileID: 2100000, guid: f80c269946ff9694fba0a793841eb50c, type: 2}
