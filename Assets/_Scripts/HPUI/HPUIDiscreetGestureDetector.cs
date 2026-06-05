@@ -3,6 +3,7 @@ using System.Collections;
 using ubco.ovilab.HPUI.Core.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace _Scripts
 {
     /// <summary>
@@ -15,9 +16,9 @@ namespace _Scripts
     {
         #region Events
         [Header("Events")]
-
         [Tooltip("Callback that is invoked when a tap gesture is detected.")]
-        [SerializeField] private HPUITapEvent onTap = new HPUITapEvent();
+        [SerializeField]
+        private HPUITapEvent onTap = new HPUITapEvent();
 
         /// <summary>
         /// Gets or sets the <see cref="HPUITapEvent"/> that is invoked when a tap gesture is detected.
@@ -29,7 +30,8 @@ namespace _Scripts
         }
 
         [Tooltip("Callback that is invoked when a double tap gesture is detected.")]
-        [SerializeField] private HPUIDoubleTapEvent onDoubleTap = new HPUIDoubleTapEvent();
+        [SerializeField]
+        private HPUIDoubleTapEvent onDoubleTap = new HPUIDoubleTapEvent();
 
         /// <summary>
         /// Gets or sets the <see cref="HPUIDoubleTapEvent"/> that is invoked when a double tap gesture is detected.
@@ -41,7 +43,9 @@ namespace _Scripts
         }
 
         [Tooltip("Callback that is invoked when a long press gesture is detected.")]
-        [SerializeField] private HPUILongPressEvent onLongPress = new HPUILongPressEvent();
+        [SerializeField]
+        private HPUILongPressEvent onLongPress = new HPUILongPressEvent();
+
         /// <summary>
         /// Gets or sets the <see cref="HPUILongPressEvent"/> that is invoked when a long press gesture is detected.
         /// </summary>
@@ -52,7 +56,9 @@ namespace _Scripts
         }
 
         [Tooltip("Callback that is invoked when a flick gesture is detected.")]
-        [SerializeField] private HPUIFlickEvent onFlick = new HPUIFlickEvent();
+        [SerializeField]
+        private HPUIFlickEvent onFlick = new HPUIFlickEvent();
+
         /// <summary>
         /// Gets or sets the <see cref="HPUIFlickEvent"/> that is invoked when a flick gesture is detected.
         /// </summary>
@@ -65,38 +71,42 @@ namespace _Scripts
 
         #region Parameters
         [Header("Tap Event Parameters")]
-
         [Tooltip("The maximum duration for a valid tap event.")]
-        [SerializeField] private float tapEventDuration = 0.2f;
+        [SerializeField]
+        private float tapEventDuration = 0.2f;
 
         [Tooltip("The duration after which a tap gesture times out if not completed. ")]
-        [SerializeField] private float tapTimeoutDuration = 0.0035f;
+        [SerializeField]
+        private float tapTimeoutDuration = 0.0035f;
 
         [Tooltip("The maximum distance the pointer can move for a tap to be considered valid.")]
-        [SerializeField] private float tapDistanceLimit = 0.008f;
+        [SerializeField]
+        private float tapDistanceLimit = 0.008f;
 
         private bool isGestureActive = false;
         private bool tapInvalid = false;
         private Coroutine tapTimeoutCoroutine;
 
         [Header("Double Tap Event Parameters")]
-
         [Tooltip("Maximum time allowed between two taps to be considered a double tap.")]
-        [SerializeField] private float doubleTapInterval = 0.25f;
+        [SerializeField]
+        private float doubleTapInterval = 0.25f;
 
         private bool waitingForSecondTap = false;
         private Coroutine singleTapCoroutine;
 
         [Header("Long Press Event Parameters")]
-
         [Tooltip("The minimum duration for a long press gesture to be triggered.")]
-        [SerializeField] private float longPressDuration = 0.4f;
+        [SerializeField]
+        private float longPressDuration = 0.4f;
 
         [Tooltip("The maximum distance the pointer can move for a long press to be considered valid.")]
-        [SerializeField] private float longPressDistanceLimit = 0.01f;
+        [SerializeField]
+        private float longPressDistanceLimit = 0.01f;
 
         [Tooltip("The duration after which a long press gesture times out if not completed. ")]
-        [SerializeField] private float longPressTimeoutDuration = 0.05f;
+        [SerializeField]
+        private float longPressTimeoutDuration = 0.05f;
 
         private bool isLongPressGestureActive = false;
         private bool longPressInvalid = false;
@@ -104,15 +114,17 @@ namespace _Scripts
         private Coroutine longPressTimeoutCoroutine;
 
         [Header("Flick Event Parameters")]
-
         [Tooltip("The minimum distance the pointer must move for a flick gesture to be detected.")]
-        [SerializeField] private float flickMinDistance = 0.09f;
+        [SerializeField]
+        private float flickMinDistance = 0.09f;
 
         [Tooltip("The maximum duration allowed for the pointer movement to be considered a flick.")]
-        [SerializeField] private float flickMaxDuration = 0.2f;
+        [SerializeField]
+        private float flickMaxDuration = 0.2f;
 
         [Tooltip("The duration after which the flick detection state is reset.")]
-        [SerializeField] private float flickTimeout = 0.2f;
+        [SerializeField]
+        private float flickTimeout = 0.2f;
 
         private bool flickCandidateActive = false;
         private bool flickDetectionComplete = false;
@@ -124,7 +136,8 @@ namespace _Scripts
         /// <summary>
         /// If true, enables verbose logging to the console for gesture detection processes.
         /// </summary>
-        [SerializeField] private bool verboseLogging = false;
+        [SerializeField]
+        private bool verboseLogging = false;
 
         #region UnityEvents
         private void OnEnable()
@@ -172,8 +185,10 @@ namespace _Scripts
                 isGestureActive = true;
             }
 
-            if (tapTimeoutCoroutine != null) StopCoroutine(tapTimeoutCoroutine);
-            if (!tapInvalid) tapTimeoutCoroutine = StartCoroutine(TapTimeout(args, tapEventDuration, tapTimeoutDuration, tapDistanceLimit));
+            if (tapTimeoutCoroutine != null)
+                StopCoroutine(tapTimeoutCoroutine);
+            if (!tapInvalid)
+                tapTimeoutCoroutine = StartCoroutine(TapTimeout(args, tapEventDuration, tapTimeoutDuration, tapDistanceLimit));
         }
 
         /// <summary>
@@ -191,8 +206,7 @@ namespace _Scripts
             yield return new WaitForSeconds(tapTimeoutDuration);
             // Check if the gesture duration is within the tap event duration and if the cumulative pointer movement
             // is within the tap distance limit.
-            if (args.TimeDelta < tapEventDuration &&
-                args.CumulativeDirection.magnitude < tapDistanceLimit)
+            if (args.TimeDelta < tapEventDuration && args.CumulativeDirection.magnitude < tapDistanceLimit)
             {
                 HandleTapCandidate(args);
             }
@@ -219,8 +233,7 @@ namespace _Scripts
         /// <param name="args">The <see cref="HPUIGestureEventArgs"/> containing information about the gesture.</param>
         private void HandleTapCandidate(HPUIGestureEventArgs args)
         {
-            if (waitingForSecondTap &&
-                interactable == args.interactableObject)
+            if (waitingForSecondTap && interactable == args.interactableObject)
             {
                 // Double tap confirmed
                 if (singleTapCoroutine != null)
@@ -289,18 +302,18 @@ namespace _Scripts
                 longPressTriggered = false;
             }
 
-            if (!longPressTriggered &&
-                isLongPressGestureActive &&
-                args.TimeDelta > longPressDuration &&
-                args.CumulativeDirection.magnitude < longPressDistanceLimit)
+            if (!longPressTriggered && isLongPressGestureActive && args.TimeDelta > longPressDuration && args.CumulativeDirection.magnitude < longPressDistanceLimit)
             {
                 longPressTriggered = true;
                 OnLongPress?.Invoke(args);
-                if (verboseLogging) Debug.Log($"<b><color=#5dff52>Long Press</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
+                if (verboseLogging)
+                    Debug.Log($"<b><color=#5dff52>Long Press</color></b> Invoked for Interactable {args.interactableObject.transform.name}");
             }
 
-            if (longPressTimeoutCoroutine != null) StopCoroutine(longPressTimeoutCoroutine);
-            if (!longPressInvalid) longPressTimeoutCoroutine = StartCoroutine(LongPressTimer(args, longPressTimeoutDuration, longPressDuration));
+            if (longPressTimeoutCoroutine != null)
+                StopCoroutine(longPressTimeoutCoroutine);
+            if (!longPressInvalid)
+                longPressTimeoutCoroutine = StartCoroutine(LongPressTimer(args, longPressTimeoutDuration, longPressDuration));
         }
 
         /// <summary>
@@ -369,7 +382,8 @@ namespace _Scripts
                 flickDetectionComplete = true;
             }
 
-            if (flickTimeoutRoutine != null) StopCoroutine(flickTimeoutRoutine);
+            if (flickTimeoutRoutine != null)
+                StopCoroutine(flickTimeoutRoutine);
             flickTimeoutRoutine = StartCoroutine(FlickReset(flickTimeout));
         }
 
@@ -387,30 +401,26 @@ namespace _Scripts
     /// Inherits from <see cref="HPUIGestureEvent"/>.
     /// </summary>
     [Serializable]
-    public class HPUITapEvent : HPUIGestureEvent
-    { }
+    public class HPUITapEvent : HPUIGestureEvent { }
 
     /// <summary>
     /// Represents a double tap gesture event within the HPUI system.
     /// Inherits from <see cref="HPUIGestureEvent"/>.
     /// </summary>
     [Serializable]
-    public class HPUIDoubleTapEvent : HPUIGestureEvent
-    { }
+    public class HPUIDoubleTapEvent : HPUIGestureEvent { }
 
     /// <summary>
     /// Represents a long press gesture event within the HPUI system.
     /// Inherits from <see cref="HPUIGestureEvent"/>.
     /// </summary>
     [Serializable]
-    public class HPUILongPressEvent : HPUIGestureEvent
-    { }
+    public class HPUILongPressEvent : HPUIGestureEvent { }
 
     /// <summary>
     /// Represents a flick gesture event within the HPUI system.
     /// This event provides the direction of the flick as a <see cref="Vector2"/> and the <see cref="HPUIGestureEventArgs"/>.
     /// </summary>
     [Serializable]
-    public class HPUIFlickEvent : UnityEvent<Vector2, HPUIGestureEventArgs>
-    { }
+    public class HPUIFlickEvent : UnityEvent<Vector2, HPUIGestureEventArgs> { }
 }

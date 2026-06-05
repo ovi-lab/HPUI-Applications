@@ -90,5 +90,8 @@ Assets/TextMesh Pro
 Assets/StreamingAssets.meta
 TempAssembly.dll
 RuntimeActionBindings.json
-.utmp
 .idea/.idea.HPUI-Applications/.idea
+.utmp
+.projectile-cache.eld
+TempAssembly.dll
+HPUI-Applications.slnx
