@@ -55,9 +55,9 @@ public class WorldDistanceVisualizer : MonoBehaviour
             tmp.font = font;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.fontSize = 1f;
-            tmp.enableWordWrapping = false;
+			tmp.textWrappingMode = TextWrappingModes.Normal;
 
-            lines.Add(new LineData
+			lines.Add(new LineData
             {
                 target = target,
                 line = lr,
