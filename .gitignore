@@ -95,3 +95,4 @@ RuntimeActionBindings.json
 .projectile-cache.eld
 TempAssembly.dll
 HPUI-Applications.slnx
+.cache/lsp-csharp/metadata/projects/Assembly-CSharp/assemblies/Unity.TextMeshPro

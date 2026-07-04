@@ -202,13 +202,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.nvim": {
-      "version": "https://github.com/FREEZX/com.unity.nvim.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "8bf67297d965e932ce0043c7d1c5e4de18825687"
-    },
     "com.unity.render-pipelines.core": {
       "version": "17.4.0",
       "depth": 1,
@@ -395,7 +388,7 @@
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.2"
       },
-      "hash": "ffe49a11cabdb7295597ca4b136cb54d17eef6fa"
+      "hash": "8cc1cc611fde090c8b845cc149f74b650fc6677e"
     },
     "ubc.ok.ovilab.hpui-components": {
       "version": "file:ubc.ok.ovilab.hpui-components",

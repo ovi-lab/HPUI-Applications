@@ -120,22 +120,17 @@ namespace TMPro
                 if (insertionSide == CaretPosition.Left)
                     newStringPosition = m_TextComponent.textInfo.characterInfo[insertionIndex].index;
                 else
-                    newStringPosition = m_TextComponent.textInfo.characterInfo[insertionIndex].index +
-                                        m_TextComponent.textInfo.characterInfo[insertionIndex].stringLength;
+                    newStringPosition = m_TextComponent.textInfo.characterInfo[insertionIndex].index + m_TextComponent.textInfo.characterInfo[insertionIndex].stringLength;
             }
             else
             {
                 if (insertionSide == CaretPosition.Left)
                 {
-                    newStringPosition = insertionIndex == 0
-                        ? m_TextComponent.textInfo.characterInfo[0].index
-                        : m_TextComponent.textInfo.characterInfo[insertionIndex - 1].index +
-                          m_TextComponent.textInfo.characterInfo[insertionIndex - 1].stringLength;
+                    newStringPosition = insertionIndex == 0 ? m_TextComponent.textInfo.characterInfo[0].index : m_TextComponent.textInfo.characterInfo[insertionIndex - 1].index + m_TextComponent.textInfo.characterInfo[insertionIndex - 1].stringLength;
                 }
                 else
                 {
-                    newStringPosition = m_TextComponent.textInfo.characterInfo[insertionIndex].index +
-                                        m_TextComponent.textInfo.characterInfo[insertionIndex].stringLength;
+                    newStringPosition = m_TextComponent.textInfo.characterInfo[insertionIndex].index + m_TextComponent.textInfo.characterInfo[insertionIndex].stringLength;
                 }
             }
 
@@ -313,9 +308,7 @@ namespace TMPro
                     int prevCaret = caret - 1;
                     next = m_TextComponent.textInfo.characterInfo[prevCaret].index;
 
-                    if (prevCaret > 0 &&
-                        m_TextComponent.textInfo.characterInfo[prevCaret].character == '\n' &&
-                        m_TextComponent.textInfo.characterInfo[prevCaret - 1].character == '\r')
+                    if (prevCaret > 0 && m_TextComponent.textInfo.characterInfo[prevCaret].character == '\n' && m_TextComponent.textInfo.characterInfo[prevCaret - 1].character == '\r')
                     {
                         next = m_TextComponent.textInfo.characterInfo[prevCaret - 1].index;
                     }
@@ -353,12 +346,9 @@ namespace TMPro
                     var charInfo = m_TextComponent.textInfo.characterInfo[caret];
                     next = charInfo.index + charInfo.stringLength;
 
-                    if (charInfo.character == '\r' &&
-                        caret + 1 < charCount &&
-                        m_TextComponent.textInfo.characterInfo[caret + 1].character == '\n')
+                    if (charInfo.character == '\r' && caret + 1 < charCount && m_TextComponent.textInfo.characterInfo[caret + 1].character == '\n')
                     {
-                        next = m_TextComponent.textInfo.characterInfo[caret + 1].index +
-                               m_TextComponent.textInfo.characterInfo[caret + 1].stringLength;
+                        next = m_TextComponent.textInfo.characterInfo[caret + 1].index + m_TextComponent.textInfo.characterInfo[caret + 1].stringLength;
                     }
                 }
             }
@@ -369,9 +359,7 @@ namespace TMPro
         private void MoveUpInternal()
         {
             int currentCaret = selectionFocusPosition;
-            int targetCaret = multiLine
-                ? LineUpCharacterPositionExternal(currentCaret, true)
-                : 0;
+            int targetCaret = multiLine ? LineUpCharacterPositionExternal(currentCaret, true) : 0;
 
             int next = GetSafeStringIndexFromCaretPosition(targetCaret);
             ApplyCaretMove(next);
@@ -380,17 +368,14 @@ namespace TMPro
         private void MoveDownInternal()
         {
             int currentCaret = selectionFocusPosition;
-            int targetCaret = multiLine
-                ? LineDownCharacterPositionExternal(currentCaret, true)
-                : Mathf.Max(0, m_TextComponent.textInfo.characterCount - 1);
+            int targetCaret = multiLine ? LineDownCharacterPositionExternal(currentCaret, true) : Mathf.Max(0, m_TextComponent.textInfo.characterCount - 1);
 
             int next = GetSafeStringIndexFromCaretPosition(targetCaret);
 
             if (!multiLine && m_TextComponent.textInfo.characterCount > 0)
             {
                 int lastCaret = m_TextComponent.textInfo.characterCount - 1;
-                next = m_TextComponent.textInfo.characterInfo[lastCaret].index +
-                       m_TextComponent.textInfo.characterInfo[lastCaret].stringLength;
+                next = m_TextComponent.textInfo.characterInfo[lastCaret].index + m_TextComponent.textInfo.characterInfo[lastCaret].stringLength;
             }
 
             ApplyCaretMove(next);
