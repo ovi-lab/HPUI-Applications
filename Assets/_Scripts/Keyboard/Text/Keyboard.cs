@@ -35,6 +35,11 @@ namespace _Scripts.Keyboard.Text
         [SerializeField]
         private KeyboardSwipePipeline swipePipeline;
 
+        [Header("Debug")]
+        [Tooltip("When enabled, draws small spheres for every point of the last completed gesture trajectory.")]
+        [SerializeField]
+        private bool showGestureTrace = false;
+
         [Header("Events")]
         [Tooltip("Event invoked when cursor position changes, passes normalized x and y (0-1 range)")]
         public CursorPositionEvent onCursorPositionChanged;
@@ -45,14 +50,21 @@ namespace _Scripts.Keyboard.Text
 
         private float yPosition = 0f;
 
+        /// <summary>
+        /// Stores the last completed gesture trajectory for debug visualization.
+        /// </summary>
+        private List<Vector2> lastGestureTrajectory;
+
         private void OnEnable()
         {
             swipePipeline.OnCursorPosition.AddListener(UpdateCursorPosition);
+            swipePipeline.OnGestureCompleted.AddListener(CacheGestureTrajectory);
         }
 
         private void OnDisable()
         {
             swipePipeline.OnCursorPosition.RemoveListener(UpdateCursorPosition);
+            swipePipeline.OnGestureCompleted.RemoveListener(CacheGestureTrajectory);
         }
 
         /// <summary>
@@ -208,6 +220,14 @@ namespace _Scripts.Keyboard.Text
             return mat;
         }
 
+        /// <summary>
+        /// Caches the last completed gesture trajectory so it can be visualized.
+        /// </summary>
+        private void CacheGestureTrajectory(List<Vector2> trajectory)
+        {
+            lastGestureTrajectory = trajectory;
+        }
+
         private void OnValidate()
         {
             // Update cursor position when sliders change in inspector
@@ -220,12 +240,36 @@ namespace _Scripts.Keyboard.Text
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
+            // Use the transform's matrix so all gizmos are drawn in local space,
+            // automatically handling translation, rotation, and scale.
+            Gizmos.matrix = transform.localToWorldMatrix;
+
             // Draw wireframe cube to visualize the 1x1 keyboard area
             // X: 0→1, Z: 0→-1 (cy maps to -z)
             Gizmos.color = Color.yellow;
-            Vector3 center = transform.position + new Vector3(0.5f, yPosition, -0.5f);
+            Vector3 center = new Vector3(0.5f, yPosition, -0.5f);
             Vector3 size = new Vector3(1f, 0.01f, 1f);
             Gizmos.DrawWireCube(center, size);
+
+            // Draw debug gesture trace points if enabled and a trajectory exists
+            if (showGestureTrace && lastGestureTrajectory != null && lastGestureTrajectory.Count > 0)
+            {
+                const float pointRadius = 0.01f;
+                int count = lastGestureTrajectory.Count;
+
+                for (int i = 0; i < count; i++)
+                {
+                    float t = count > 1 ? (float)i / (count - 1) : 0f;
+                    Gizmos.color = Color.Lerp(Color.red, Color.green, t);
+
+                    Vector2 pt = lastGestureTrajectory[i];
+                    Vector3 localPos = new Vector3(pt.x, yPosition, -pt.y);
+                    Gizmos.DrawSphere(localPos, pointRadius);
+                }
+            }
+
+            // Restore identity so other gizmos aren't affected
+            Gizmos.matrix = Matrix4x4.identity;
         }
 #endif
 
