@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace _Scripts.Keyboard
+namespace _Scripts.Keyboard.Text
 {
     /// <summary>
     /// Unity client for the FUTO Swipe Library HTTP server (swipesrv)
@@ -25,11 +25,6 @@ namespace _Scripts.Keyboard
         [Tooltip("Port number the swipesrv is listening on")]
         [SerializeField]
         private int serverPort = 8012;
-
-        [Header("Recognition Settings")]
-        [Tooltip("Maximum number of recognition results to return")]
-        [SerializeField]
-        private int maxResults = 4;
 
         [Tooltip("Context words for language model (space-separated)")]
         [SerializeField]

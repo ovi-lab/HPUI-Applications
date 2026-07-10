@@ -3,7 +3,7 @@ using EditorAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace _Scripts.Keyboard
+namespace _Scripts.Keyboard.Text
 {
     /// <summary>
     /// Generates a virtual keyboard in the XZ plane based on layout.json
@@ -33,7 +33,7 @@ namespace _Scripts.Keyboard
         private float cursorY = 0.5f;
 
         [SerializeField]
-        private KeyboardGestureSmoother inputCapture;
+        private KeyboardSwipePipeline swipePipeline;
 
         [Header("Events")]
         [Tooltip("Event invoked when cursor position changes, passes normalized x and y (0-1 range)")]
@@ -47,12 +47,12 @@ namespace _Scripts.Keyboard
 
         private void OnEnable()
         {
-            inputCapture.OnFilteredPosition.AddListener(UpdateCursorPosition);
+            swipePipeline.OnCursorPosition.AddListener(UpdateCursorPosition);
         }
 
         private void OnDisable()
         {
-            inputCapture.OnFilteredPosition.RemoveListener(UpdateCursorPosition);
+            swipePipeline.OnCursorPosition.RemoveListener(UpdateCursorPosition);
         }
 
         /// <summary>

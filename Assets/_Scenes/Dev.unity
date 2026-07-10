@@ -129,10 +129,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4531021}
   - component: {fileID: 4531022}
-  - component: {fileID: 4531023}
   - component: {fileID: 4531024}
+  - component: {fileID: 4531023}
   m_Layer: 0
-  m_Name: HPUIKeyboardViz
+  m_Name: ThumbSwype
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,13 +165,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4531020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b56b0c1d84a3cc47b92673f088ed9cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 66996fc418741d347a065d98389c745c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.KeyboardInputCapture
-  OnKeyboardInputCapture:
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.Text.FingerRowCapture
+  OnRawPosition:
     m_PersistentCalls:
       m_Calls: []
-  OnKeyboardInputCaptureRaw:
+  OnRawPositionDebug:
     m_PersistentCalls:
       m_Calls: []
   topRow: {fileID: 1776563688}
@@ -183,22 +183,6 @@ MonoBehaviour:
   bottomRow: {fileID: 1698494361}
   minMaxBottomRowLength: {x: 0.04751, y: -0.01731}
   minMaxBottomRowHeight: {x: 0.00378, y: 0.00154}
-  alpha: 0.05
-  beta: 0.45
-  enablePrematureTrigger: 0
-  prematureTriggerTime: 0
-  OnGestureStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPrematureTrigger:
-    m_PersistentCalls:
-      m_Calls: []
-  OnGestureCompleted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnGestureCancelled:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &4531023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,18 +192,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 4531020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8413d2bd922d6409a68f76ed5fbb74, type: 3}
+  m_Script: {fileID: 11500000, guid: b1b9ca44f8a55074fb22686231a354e9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.KeyboardGestureSmoother
-  inputCapture: {fileID: 4531022}
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.Text.KeyboardSwipePipeline
+  fingerRowCapture: {fileID: 4531022}
+  alpha: 0.05
+  beta: 0.2
+  enablePrematureTrigger: 0
+  prematureTriggerTime: 0
   filterFrequency: 72
   minCutoff: 3.5
-  beta: 0.045
+  filterBeta: 0.045
   dCutoff: 1
-  OnFilteredPosition:
+  swipeRecognizer: {fileID: 4531024}
+  outputText: {fileID: 21445666}
+  OnCursorPosition:
     m_PersistentCalls:
       m_Calls: []
-  OnGestureTrajectory:
+  OnGestureCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGestureStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGestureCancelled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPrematureTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWordRecognized:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &4531024
@@ -231,12 +233,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4531020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72269b2eefa2c642acbcbf0f22512d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 35eaf7e3ddbd64f4eba8822a83b769d5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.KeyboardOutput
-  gestureSmoother: {fileID: 4531023}
-  swipeRecognizer: {fileID: 1051286248}
-  outputText: {fileID: 21445666}
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.Text.SwipeRecognizer
+  serverIP: localhost
+  serverPort: 8012
+  contextWords: 
+  showPerf: 0
 --- !u!1 &20258980
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,7 +4270,7 @@ GameObject:
   - component: {fileID: 513002165}
   - component: {fileID: 513002166}
   m_Layer: 7
-  m_Name: Keyboard
+  m_Name: KeyboardVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4332,7 +4335,7 @@ MonoBehaviour:
   cursor: {fileID: 1238242214}
   cursorX: 0
   cursorY: 0
-  inputCapture: {fileID: 4531023}
+  swipePipeline: {fileID: 4531023}
   onCursorPositionChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8598,70 +8601,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1 &1051286246
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1051286249}
-  - component: {fileID: 1051286248}
-  - component: {fileID: 1051286247}
-  m_Layer: 0
-  m_Name: SwipeTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1051286247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1051286246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbb7d90a552b2d347b6c53725da0c29b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SwipeRecognizerExample
-  swipeRecognizer: {fileID: 1051286248}
-  runTestOnStart: 0
---- !u!114 &1051286248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1051286246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35eaf7e3ddbd64f4eba8822a83b769d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SwipeRecognizer
-  serverIP: 172.21.218.69
-  serverPort: 8012
-  maxResults: 4
-  contextWords: may I know
-  showPerf: 0
---- !u!4 &1051286249
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1051286246}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1064916121
 GameObject:
   m_ObjectHideFlags: 0
@@ -16574,17 +16513,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ubco.ovilab.ViconUnityStream::ubco.ovilab.ViconUnityStream.SubjectDataManager
   baseURI: ws://10.80.58.233:5001/marker/
-  streamType: 2
+  streamType: 1
   enableWriteData: 0
   fileSaveLocationBase: 0
   fixedFileSaveLocationBase: 
   pathToDataFile: Resources\Recordings
   fileNameBase: KeyboardTest1
-  totalFrames: 1858
+  totalFrames: 972
   currentFrame: 0
   play: 0
   jsonlFilesToLoad:
-  - {fileID: 4900000, guid: 0940e8cc14e4f3043b27160f9394f5db, type: 3}
+  - {fileID: 4900000, guid: 7e6e78fd75d71bc47b6b26b85f06c5df, type: 3}
   suppressMissingSubjectWarning: 0
 --- !u!4 &1926128964
 Transform:
@@ -17801,7 +17740,6 @@ SceneRoots:
   - {fileID: 1488850173}
   - {fileID: 1785230810}
   - {fileID: 1677324237}
-  - {fileID: 1051286249}
   - {fileID: 513002165}
   - {fileID: 4531021}
   - {fileID: 553775478}

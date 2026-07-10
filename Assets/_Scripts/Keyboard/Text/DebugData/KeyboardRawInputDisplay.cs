@@ -1,9 +1,8 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Scripts.Keyboard
+namespace _Scripts.Keyboard.Text.DebugData
 {
     public class KeyboardRawInputDisplay : MonoBehaviour
     {
@@ -14,18 +13,18 @@ namespace _Scripts.Keyboard
         private Image panel;
 
         [SerializeField]
-        private KeyboardInputCapture capture;
+        private FingerRowCapture capture;
 
         private bool active = false;
 
         private void OnEnable()
         {
-            capture.OnKeyboardInputCaptureRaw.AddListener(UpdateTmp);
+            capture.OnRawPositionDebug.AddListener(UpdateTmp);
         }
 
         private void OnDisable()
         {
-            capture.OnKeyboardInputCaptureRaw.RemoveListener(UpdateTmp);
+            capture.OnRawPositionDebug.RemoveListener(UpdateTmp);
         }
 
         private void UpdateTmp(Vector2 rawInput, string name)

@@ -1,6 +1,6 @@
 using System;
 
-namespace _Scripts.Keyboard
+namespace _Scripts.HPUI
 {
     public class GestureStateMachine
     {

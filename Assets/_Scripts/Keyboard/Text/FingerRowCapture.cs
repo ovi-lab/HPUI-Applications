@@ -2,19 +2,26 @@ using ubco.ovilab.HPUI.Core.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace _Scripts.Keyboard
+namespace _Scripts.Keyboard.Text
 {
-    public class KeyboardInputCapture : MonoBehaviour
+    /// <summary>
+    /// Pure sensor. Subscribes to HPUI finger-row interactables, remaps each row's
+    /// spatial coordinates into normalized (0,1) keyboard space, and fires raw
+    /// position events every frame.
+    /// </summary>
+    public class FingerRowCapture : MonoBehaviour
     {
         /// <summary>
-        /// Fired every time on HPUI gesture event on the keyboard surface
+        /// Fired every frame an HPUI finger is tracking on the keyboard surface.
+        /// Position is normalized (0,1) keyboard-space.
         /// </summary>
-        public UnityEvent<Vector2> OnKeyboardInputCapture;
+        public UnityEvent<Vector2> OnRawPosition;
 
         /// <summary>
-        /// Fired every time on HPUI gesture event on the keyboard surface
+        /// Fired every frame alongside OnRawPosition with additional debug info
+        /// (raw interactable-space coordinate and the interactable name).
         /// </summary>
-        public UnityEvent<Vector2, string> OnKeyboardInputCaptureRaw;
+        public UnityEvent<Vector2, string> OnRawPositionDebug;
 
         [Header("HPUI Interactable Parameters")]
         [SerializeField]
@@ -44,53 +51,11 @@ namespace _Scripts.Keyboard
         [SerializeField, Tooltip("Range of data capture across the ring finger interactable")]
         private Vector2 minMaxBottomRowHeight;
 
-        [Header("Gesture Collection Parameters")]
-        [SerializeField, Tooltip("Minimum gesture duration (s) to count as valid")]
-        private float alpha;
-
-        [SerializeField, Tooltip("Idle time (s) before a gesture is considered finished")]
-        private float beta;
-
-        [SerializeField, Tooltip("For more button and short gesture components")]
-        private bool enablePrematureTrigger;
-
-        [SerializeField, Tooltip("Duration (s) of continuous input before a premature trigger fires")]
-        private float prematureTriggerTime;
-
-        private Vector2 interactableTouchPosition;
-        private Vector2 interactableTouchPositionRaw;
-
-        private GestureStateMachine gestureState;
-
-        public UnityEvent OnGestureStarted;
-        public UnityEvent OnPrematureTrigger;
-        public UnityEvent OnGestureCompleted;
-        public UnityEvent OnGestureCancelled;
-
-        private void Awake()
-        {
-            float? prematureTrigger = enablePrematureTrigger ? prematureTriggerTime : (float?)null;
-            gestureState = new GestureStateMachine(alpha, beta, prematureTrigger);
-            gestureState.OnGestureStarted += () => OnGestureStarted?.Invoke();
-            gestureState.OnPrematureTriggerReached += () => OnPrematureTrigger?.Invoke();
-            gestureState.OnGestureCompleted += () => OnGestureCompleted?.Invoke();
-            gestureState.OnGestureCancelled += () => OnGestureCancelled?.Invoke();
-        }
-
         private void OnEnable()
         {
-            // Subscribe to InteractableStateEvent on each row to get per-frame
-            // tracking state and position. The interactable whose state is
-            // TrackingUpdate or TrackingStarted is the current tracking target
-            // (equivalent to the old CurrentTrackingInteractable).
             topRow.InteractableStateEvent.AddListener(CaptureTrackingState);
             midRow.InteractableStateEvent.AddListener(CaptureTrackingState);
             bottomRow.InteractableStateEvent.AddListener(CaptureTrackingState);
-        }
-
-        private void Update()
-        {
-            gestureState.Tick(Time.deltaTime);
         }
 
         private void OnDisable()
@@ -104,37 +69,35 @@ namespace _Scripts.Keyboard
         /// Called per-frame for each interactable that is being detected.
         /// The interactable with <see cref="HPUIInteractableState.TrackingUpdate"/>
         /// or <see cref="HPUIInteractableState.TrackingStarted"/> is the current
-        /// tracking target (replaces the old CurrentTrackingInteractable).
+        /// tracking target.
         /// </summary>
         private void CaptureTrackingState(HPUIInteractableStateEventArgs args)
         {
             if (args.State != HPUIInteractableState.TrackingUpdate && args.State != HPUIInteractableState.TrackingStarted)
-            {
                 return;
-            }
 
             IHPUIInteractable currentInteractable = args.interactableObject;
-            interactableTouchPositionRaw = new Vector2(args.Position.y, args.Position.x);
+            Vector2 rawPosition = new Vector2(args.Position.y, args.Position.x);
+            Vector2 normalizedPosition;
 
             switch (currentInteractable)
             {
                 case var i when ReferenceEquals(i, topRow):
-                    interactableTouchPosition = ComputeRowPosition(args.Position, minMaxTopRowLength, minMaxTopRowHeight, 0f, 1f / 3f);
+                    normalizedPosition = ComputeRowPosition(args.Position, minMaxTopRowLength, minMaxTopRowHeight, 0f, 1f / 3f);
                     break;
                 case var i when ReferenceEquals(i, midRow):
-                    interactableTouchPosition = ComputeRowPosition(args.Position, minMaxMidRowLength, minMaxMidRowHeight, 1f / 3f, 2f / 3f);
+                    normalizedPosition = ComputeRowPosition(args.Position, minMaxMidRowLength, minMaxMidRowHeight, 1f / 3f, 2f / 3f);
                     break;
                 case var i when ReferenceEquals(i, bottomRow):
-                    interactableTouchPosition = ComputeRowPosition(args.Position, minMaxBottomRowLength, minMaxBottomRowHeight, 2f / 3f, 1f);
+                    normalizedPosition = ComputeRowPosition(args.Position, minMaxBottomRowLength, minMaxBottomRowHeight, 2f / 3f, 1f);
                     break;
                 default:
                     Debug.LogError($"Unknown interactable sending data: {args.interactableObject.transform.name}");
                     return;
             }
 
-            gestureState.ReportInput();
-            OnKeyboardInputCapture?.Invoke(interactableTouchPosition);
-            OnKeyboardInputCaptureRaw?.Invoke(interactableTouchPositionRaw, args.interactableObject.transform.name);
+            OnRawPosition?.Invoke(normalizedPosition);
+            OnRawPositionDebug?.Invoke(rawPosition, args.interactableObject.transform.name);
         }
 
         /// <summary>
