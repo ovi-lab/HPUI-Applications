@@ -1782,7 +1782,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f80c269946ff9694fba0a793841eb50c, type: 2}
+      objectReference: {fileID: 2100000, guid: b27d814ea5499e345a31b61a387bd78d, type: 2}
     - target: {fileID: 4403110424507050924, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
       propertyPath: m_Name
@@ -5461,7 +5461,7 @@ MonoBehaviour:
         longitudinalOffset: 0
       m_Variable: {fileID: 0}
     jointTransform: {fileID: 0}
-  defaultMaterial: {fileID: 2100000, guid: d79a061eb63ad3349bcb78a9b479ed2d, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 887109aa62ad36f438098afe551d2f76, type: 2}
   filter: {fileID: 0}
   sigmaFactor: 0.25
   continuousSurfaceCreatedEvent:
@@ -6345,7 +6345,7 @@ MonoBehaviour:
         longitudinalOffset: 0
       m_Variable: {fileID: 0}
     jointTransform: {fileID: 0}
-  defaultMaterial: {fileID: 2100000, guid: 2902ab028bcfba744a5da62078f4c2d5, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 858ed7dcdaf353f4db2d3d406526b0af, type: 2}
   filter: {fileID: 0}
   sigmaFactor: 0.25
   continuousSurfaceCreatedEvent:
@@ -6727,7 +6727,7 @@ MonoBehaviour:
         longitudinalOffset: 0
       m_Variable: {fileID: 0}
     jointTransform: {fileID: 0}
-  defaultMaterial: {fileID: 2100000, guid: a1040326833365b4ea90333181765cd3, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 6bef1440e897afb4fb761b274015ef25, type: 2}
   filter: {fileID: 0}
   sigmaFactor: 0.25
   continuousSurfaceCreatedEvent:
