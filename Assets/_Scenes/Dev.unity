@@ -1766,17 +1766,17 @@ PrefabInstance:
     - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
       propertyPath: rootPositionOffset.x
-      value: -0.04270004
+      value: -0.06716523
       objectReference: {fileID: 0}
     - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
       propertyPath: rootPositionOffset.y
-      value: 0.0040512565
+      value: 0.010322846
       objectReference: {fileID: 0}
     - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
       propertyPath: rootPositionOffset.z
-      value: 0.010078919
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3249593465762087424, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
@@ -1882,7 +1882,7 @@ MonoBehaviour:
   cursorX: 0
   cursorY: 0
   swipePipeline: {fileID: 4531023}
-  showGestureTrace: 0
+  showGestureTrace: 1
   onCursorPositionChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3085,6 +3085,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800421878}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &851761661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 851761663}
+  - component: {fileID: 851761662}
+  m_Layer: 0
+  m_Name: SwapHandMat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &851761662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851761661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7274f42cc09234d46953a675bc391656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.Utils.HandMatSwitcher
+  handRenderer: {fileID: 2122213439}
+  visibleMaterial: {fileID: -8693172909504858975, guid: 1f857fbd164c5b04198fade34cecefd0,
+    type: 3}
+  invisibleMaterial: {fileID: 2100000, guid: b27d814ea5499e345a31b61a387bd78d, type: 2}
+  defaultStateIsInvisible: 1
+--- !u!4 &851761663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851761661}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &854906843
 GameObject:
   m_ObjectHideFlags: 0
@@ -7538,6 +7587,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111767516}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!137 &2122213439 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3249593465762087424, guid: 9be4c166b2ff0d14bbb444e856617e8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 492566750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -7557,3 +7612,4 @@ SceneRoots:
   - {fileID: 4531021}
   - {fileID: 553775478}
   - {fileID: 923468708}
+  - {fileID: 851761663}
