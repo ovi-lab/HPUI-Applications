@@ -123,8 +123,8 @@ namespace _Scripts.Keyboard.Text
             float xPos = normalizedX; // Maps to Unity X (0→1)
             float zPos = -normalizedY; // Maps to Unity -Z (0→-1)
 
-            Vector3 worldPosition = new Vector3(xPos, yPosition, zPos);
-            cursor.position = transform.position + worldPosition;
+            Vector3 localPosition = new Vector3(xPos, yPosition, zPos);
+            cursor.position = transform.TransformPoint(localPosition);
 
             // Invoke event
             onCursorPositionChanged?.Invoke(normalizedX, normalizedY);
@@ -187,7 +187,7 @@ namespace _Scripts.Keyboard.Text
             // Instantiate as child of this GameObject
             GameObject keyObj = Instantiate(letterQuadPrefab, transform);
             keyObj.name = $"Key_{keyData.letter.ToUpper()}";
-            keyObj.transform.position = position;
+            keyObj.transform.localPosition = position;
 
             // Load and assign material for this letter
             Material keyMaterial = LoadMaterialForLetter(keyData.letter);
