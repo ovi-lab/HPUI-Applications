@@ -734,7 +734,8 @@ MonoBehaviour:
   driveSkeleton: 1
   rootSegment: base1
   dataQualityThreshold: 5
-  rootPositionOffset: {x: 0, y: 0, z: 0}
+  hwdMerger: {fileID: 0}
+  applyViconToQuestTransform: 0
   OnHidingSubject:
     m_PersistentCalls:
       m_Calls: []
@@ -768,6 +769,9 @@ MonoBehaviour:
   distanceThreshold: 0.001
   angleThreshold: 0.5
   autoMerge: 1
+  continuousMode: 1
+  continuousFilterBeta: 0
+  eyeOffset: {x: 0.025, y: -0.01, z: 0}
   onMergeSuccess:
     m_PersistentCalls:
       m_Calls: []
@@ -1750,6 +1754,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
+      propertyPath: hwdMerger
+      value: 
+      objectReference: {fileID: 131495073}
+    - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -1766,16 +1775,21 @@ PrefabInstance:
     - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
       propertyPath: rootPositionOffset.x
-      value: -0.06716523
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
       propertyPath: rootPositionOffset.y
-      value: 0.010322846
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
         type: 3}
       propertyPath: rootPositionOffset.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1302737125989553611, guid: 9be4c166b2ff0d14bbb444e856617e8d,
+        type: 3}
+      propertyPath: applyViconToQuestTransform
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3249593465762087424, guid: 9be4c166b2ff0d14bbb444e856617e8d,
@@ -2424,7 +2438,7 @@ MonoBehaviour:
   minRenderScale: 0.7
   maxRenderScale: 1
   _headPoseRelativeOffsetRotation: {x: 0, y: 0, z: 0}
-  _headPoseRelativeOffsetTranslation: {x: 0, y: 0, z: 0}
+  _headPoseRelativeOffsetTranslation: {x: 0, y: 0.02, z: 0}
   enableCoreMetricsRelease: 0
   enableCoreMetricsDevelopment: 1
   coreMetricVisibility:
@@ -3468,6 +3482,9 @@ MonoBehaviour:
   minMaxBottomRowLength: {x: 0.04751, y: -0.01731}
   targetHandScript: {fileID: 575904744}
   offsetMagnitude: 0.1
+  _indexValue: 0.5
+  _middleValue: 0.5
+  _ringValue: 0.5
 --- !u!4 &923468708
 Transform:
   m_ObjectHideFlags: 0
