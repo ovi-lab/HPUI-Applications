@@ -642,7 +642,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -2918,7 +2918,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -2953,7 +2953,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -3308,7 +3308,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e062dcd1f19e6b74992e55c5711f7e1c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.Numpad
   buttons: []
   numpadText: {fileID: 2101860382}
 --- !u!1 &396369897
@@ -5384,7 +5384,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -5419,7 +5419,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -5824,7 +5824,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -5859,7 +5859,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -9250,7 +9250,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -9285,7 +9285,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -9553,7 +9553,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -9588,7 +9588,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -12482,7 +12482,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -12517,7 +12517,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -13269,7 +13269,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -13304,7 +13304,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []
@@ -13454,7 +13454,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls: []
@@ -13489,7 +13489,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a56b91a4df2f49439f711287482222d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.NumpadButton
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Numpad.NumpadButton
   OnTap:
     m_PersistentCalls:
       m_Calls: []

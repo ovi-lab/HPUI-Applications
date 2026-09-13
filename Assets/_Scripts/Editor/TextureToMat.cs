@@ -3,8 +3,10 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 
-public class TextureToMat : EditorWindow
+namespace _Scripts.Editor
 {
+    public class TextureToMat : EditorWindow
+    {
     private Vector2 scroll;
     private List<string> validDirs = new List<string>();
     private List<bool> selected = new List<bool>();
@@ -146,4 +148,5 @@ public class TextureToMat : EditorWindow
         AssetDatabase.Refresh();
     }
 
+    }
 }

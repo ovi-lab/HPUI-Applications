@@ -4094,7 +4094,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 413dea7c565fd764d916e30ec32379fd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TMPro.ExtendedTMPInputField
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Utils.ExtendedTMPInputField
   m_Navigation:
     m_Mode: 3
     m_WrapAround: 0
@@ -6042,7 +6042,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4f85b02e297a584583dd911c159d5cf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.KeyboardRawInputDisplay
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.Text.DebugData.KeyboardRawInputDisplay
   tmp: {fileID: 1667401901}
   panel: {fileID: 259561056}
   capture: {fileID: 4531022}
@@ -6074,7 +6074,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb5b9aa07bd99044f8f6d613396b04d4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TMPro.TestExtendedTMPInput
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.TextComposition.Input.TestExtendedTMPInput
   targetInputField: {fileID: 1130840352}
   eventCamera: {fileID: 1014281119}
   clickViewportX: 0.452

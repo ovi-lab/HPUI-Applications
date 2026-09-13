@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
-namespace TMPro
+namespace _Scripts.Utils
 {
     /// <summary>
     /// Extension of TMP_InputField that exposes programmatic caret movement,

@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace _Scripts.Legacy.v1.Editor
+namespace _Scripts.Editor
 {
     public static class ResetTransforms
     {
