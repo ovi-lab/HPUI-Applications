@@ -8,7 +8,7 @@ namespace _Scripts.ColorPicker
     /// we should simplify the process 
     /// of getting gesture data from 
     /// continuous interactables down the line
-    public class HPUISlider : MonoBehaviour
+    public class ColorSlider : MonoBehaviour
     {
         [SerializeField] private ColorPickerSlider slider;
         [SerializeField] private Vector2 minMax;

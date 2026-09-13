@@ -1,10 +1,12 @@
 using EditorAttributes;
 using UnityEngine;
+using TMPro;
+using _Scripts.Utils;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace TMPro
+namespace _Scripts.TextComposition.Input
 {
     /// <summary>
     /// Simple runtime/editor tester for ExtendedTMPInputField.

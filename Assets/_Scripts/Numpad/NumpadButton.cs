@@ -2,8 +2,9 @@ using System.Collections;
 using ubco.ovilab.HPUI.Core.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
+using _Scripts.HPUI;
 
-namespace _Scripts
+namespace _Scripts.Numpad
 {
     public class NumpadButton : MonoBehaviour
     {
@@ -30,14 +31,14 @@ namespace _Scripts
         public string DoubleTapAction => doubleTapAction;
         public string LongPressTapAction => longPressTapAction;
 
-        private HPUIDiscreetGestureDetector gestureDetector;
+        private HPUIDiscreteGestureDetector gestureDetector;
         private HPUIBaseInteractable baseInteractable;
         private Coroutine setBaseMatRoutine;
         private MeshRenderer meshRenderer;
 
         private void OnEnable()
         {
-            gestureDetector = GetComponent<HPUIDiscreetGestureDetector>();
+            gestureDetector = GetComponent<HPUIDiscreteGestureDetector>();
             baseInteractable = GetComponent<HPUIBaseInteractable>();
             meshRenderer = transform.GetComponentInChildren<MeshRenderer>();
 

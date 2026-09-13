@@ -1739,7 +1739,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.ColorSlider
   slider: {fileID: 1550401467}
   minMax: {x: 0.04, y: -0.04}
   alongX: 1
@@ -2039,7 +2039,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.ColorSlider
   slider: {fileID: 74948823}
   minMax: {x: 0.04, y: -0.04}
   alongX: 0
@@ -2650,7 +2650,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls:
@@ -3942,7 +3942,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.ColorSlider
   slider: {fileID: 719712454}
   minMax: {x: 0.04, y: -0.04}
   alongX: 0
@@ -7174,7 +7174,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.ColorSlider
   slider: {fileID: 782228335}
   minMax: {x: -0.04, y: 0.04}
   alongX: 1
@@ -10219,7 +10219,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.ColorSlider
   slider: {fileID: 177245820}
   minMax: {x: -0.04, y: 0.04}
   alongX: 1
@@ -13317,7 +13317,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4488188792a2ffe458b80dfa314cebe0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.HPUISlider
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.ColorPicker.ColorSlider
   slider: {fileID: 1129239083}
   minMax: {x: 0.04, y: -0.04}
   alongX: 0
@@ -14907,7 +14907,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605ca709a68e32e4bab9f213705e1374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUIDiscreetGestureDetector
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.HPUI.HPUIDiscreteGestureDetector
   onTap:
     m_PersistentCalls:
       m_Calls:
