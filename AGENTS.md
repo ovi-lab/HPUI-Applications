@@ -43,7 +43,7 @@ All testing and validation is done by the developer. Do not write automated test
 
 After an implementation is complete (to the best of your ability), follow this sequence exactly:
 
-1. **Review**: spin up a reviewer subagent with project context (README, spec issue #1, and the specific issue being implemented) and have it review the diff only. Fix any issues it notes.
+1. **Review**: spin up a reviewer subagent with project context (README, and the specific issue being implemented) and have it review the diff only. Fix any issues it notes.
 2. **Report, don't test**: do not run any tests or build verification. Just inform the user that the implementation is complete and how they can test it.
 3. **No git/issue actions without approval**: do not commit, push, or close issues until the user has given explicit approval.
 
