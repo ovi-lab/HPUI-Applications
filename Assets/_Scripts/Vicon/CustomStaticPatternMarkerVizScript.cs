@@ -23,6 +23,54 @@ namespace ubco.ovilab.ViconUnityStream
         private GameObject markerPrefab;
 
         private Dictionary<string, GameObject> markerInstances = new();
+        private Quaternion lastPatternRotation = Quaternion.identity;
+        private bool hasPatternRotation;
+
+        /// <summary>
+        /// Live marker instances keyed by marker name. The instance transforms
+        /// are positioned in world space every frame by <see cref="UpdateMarkerInstances"/>.
+        /// </summary>
+        public IReadOnlyDictionary<string, GameObject> MarkerInstances => markerInstances;
+
+        /// <summary>
+        /// The <see cref="SubjectDataManager"/> feeding this subject, for direct
+        /// access to the raw streamed data.
+        /// </summary>
+        public SubjectDataManager SubjectDataManagerRef => subjectDataManager;
+
+        /// <summary>
+        /// World-space positions of all live marker instances. Returns false if
+        /// no instances have been created yet (no data seen this session).
+        /// </summary>
+        public bool TryGetMarkerWorldPositions(out Dictionary<string, Vector3> positions)
+        {
+            positions = new Dictionary<string, Vector3>();
+            if (markerInstances.Count == 0)
+            {
+                return false;
+            }
+            foreach (KeyValuePair<string, GameObject> pair in markerInstances)
+            {
+                if (pair.Value == null)
+                {
+                    positions.Clear();
+                    return false;
+                }
+                positions[pair.Key] = pair.Value.transform.position;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Pattern rotation computed by the forward/right machinery this frame.
+        /// Returns false when the pattern does not define the required segments
+        /// or segment data was missing in the latest frame.
+        /// </summary>
+        public bool TryGetPatternRotation(out Quaternion rotation)
+        {
+            rotation = lastPatternRotation;
+            return hasPatternRotation;
+        }
 
         [Tooltip("The first segment to use to compute the forward vector")]
         [SerializeField]
@@ -79,6 +127,7 @@ namespace ubco.ovilab.ViconUnityStream
         protected override Dictionary<string, Vector3> ProcessSegments(Dictionary<string, Vector3> segments, ViconStreamData viconStreamData)
         {
             UpdateMarkerInstances(viconStreamData);
+            hasPatternRotation = false;
 
             Vector3 forward;
             Vector3 right;
@@ -87,6 +136,14 @@ namespace ubco.ovilab.ViconUnityStream
             if (segments.TryGetValue(forwardSegment1, out Vector3 forward1) && segments.TryGetValue(forwardSegment2, out Vector3 forward2))
             {
                 forward = forward2 - forward1;
+                if (forward.sqrMagnitude <= 0f)
+                {
+                    /// Degenerate forward (occluded / zero-filled segment markers);
+                    /// LookRotation would warn and yield identity, which must not
+                    /// be recorded as a valid pattern rotation.
+                    Debug.LogError($"Degenerate forward vector from segments `{forwardSegment1}` and `{forwardSegment2}` (likely zero-filled data).");
+                    return segments;
+                }
             }
             else
             {
@@ -99,6 +156,11 @@ namespace ubco.ovilab.ViconUnityStream
                 if (segments.TryGetValue(rightSegment1, out Vector3 right1) && segments.TryGetValue(rightSegment2, out Vector3 right2))
                 {
                     right = right2 - right1;
+                    if (right.sqrMagnitude <= 0f)
+                    {
+                        Debug.LogError($"Degenerate right vector from segments `{rightSegment1}` and `{rightSegment2}` (likely zero-filled data).");
+                        return segments;
+                    }
                 }
                 else
                 {
@@ -107,12 +169,22 @@ namespace ubco.ovilab.ViconUnityStream
                 }
 
                 up = Vector3.Cross(right, forward);
+                if (up.sqrMagnitude <= 0f)
+                {
+                    Debug.LogError($"Degenerate up vector: right and forward are collinear for this pattern.");
+                    return segments;
+                }
             }
             else
             {
                 if (segments.TryGetValue(upSegment1, out Vector3 up1) && segments.TryGetValue(upSegment2, out Vector3 up2))
                 {
                     up = up2 - up1;
+                    if (up.sqrMagnitude <= 0f)
+                    {
+                        Debug.LogError($"Degenerate up vector from segments `{upSegment1}` and `{upSegment2}` (likely zero-filled data).");
+                        return segments;
+                    }
                 }
                 else
                 {
@@ -122,6 +194,8 @@ namespace ubco.ovilab.ViconUnityStream
             }
 
             Quaternion rot = Quaternion.LookRotation(forward, up);
+            lastPatternRotation = rot;
+            hasPatternRotation = true;
             foreach (string segmentName in segments.Keys)
             {
                 segmentsRotation[segmentName] = rot;
