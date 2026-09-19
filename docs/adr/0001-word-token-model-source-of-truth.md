@@ -6,9 +6,11 @@ The editor's document state must be robust against every kind of misuse, and und
 
 - TMP text as the source of truth with a derived word-index view: rejected because two writers cannot be made corruption-proof, and because "derive target state from current state" is the exact failure mode the snapshot design forbids.
 - A hand-built VR text renderer: rejected; TMP already provides rendering, wrapping, and rich-text support, and rebuilding it is high-risk.
+- Rebuilding the extended field's editing machinery from scratch: rejected. A fully custom caret-rendering / touch→caret-conversion / visual-selection implementation was attempted before and is genuinely hard to engineer; `ExtendedTMPInputField` already provides that machinery, so it is reused as the base display/placement component.
 
 ## Consequences
 
 - Only two pure functions bridge model and display: model→string compilation, and char-index→word-boundary mapping. Both are deterministic and cheap to assert on.
 - Formatting attributes are model data; rich-text tags are generated, never parsed from user content.
+- `ExtendedTMPInputField` is the base display/placement component: its caret rendering, screen/touch→caret-position conversion (`SetCaretFromScreenPosition`), visual selection mode, and formatting/caret rendering on a world-space canvas are reused rather than rebuilt. The reuse covers its *machinery*, not its *state ownership*: the field consumes compiled model→string text as a pure renderer and feeds placements/commands back through the composition facade, so the model remains the single writer of logical editor state and the two-pure-bridge-functions invariant holds at the model boundary.
 - A debug invariant check (reparse the generated string, compare against the model) can run before every ledger append.
