@@ -257,7 +257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &21445664
 RectTransform:
   m_ObjectHideFlags: 0
@@ -914,7 +914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &259561055
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4208,11 +4208,9 @@ MonoBehaviour:
   m_CaretColor: {r: 0, g: 0, b: 0, a: 1}
   m_CustomCaretColor: 1
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 'This is a whole bunch of <b>lorem ipsum</b> text that I am using as a
-    placeholder to test my text composition application.
-
-    This is some more text.
-    I like trains. I''m not much of a fan of cars or planes though.'
+  m_Text: This is a whole bunch of <b>lorem ipsum</b> text that I am using as a placeholder
+    to test my text composition application this is some more text I like trains
+    I'm not much of a fan of cars or planes though
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -4325,8 +4323,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "This is a whole bunch of <b>lorem ipsum</b> text that I am using as a
-    placeholder to test my text composition application.\nThis is some more text.
-    I like trains. I'm not much of a fan of cars or planes though.\u200B"
+    placeholder to test my text composition application this is some more text I
+    like trains I'm not much of a fan of cars or planes though\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5220,13 +5218,15 @@ GameObject:
   - component: {fileID: 1488850171}
   - component: {fileID: 1488850170}
   - component: {fileID: 1488850169}
+  - component: {fileID: 1488850174}
+  - component: {fileID: 1488850175}
   m_Layer: 5
-  m_Name: ExtendedTMP
+  m_Name: Main Editor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1488850169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5343,6 +5343,35 @@ RectTransform:
   m_AnchoredPosition: {x: 2.04, y: 0.555}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1488850174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488850168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b602be23f525247a78264a93c1c520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.TextComposition.Document.TextCompositionController
+  initialText: hello world
+  sampleWord: test
+--- !u!114 &1488850175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488850168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b1022e3e6e15144bb88b115f92b4b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.TextComposition.Render.TMPWordRenderer
+  controller: {fileID: 1488850174}
+  inputField: {fileID: 1130840352}
+  target: {fileID: 0}
 --- !u!1 &1513419175
 GameObject:
   m_ObjectHideFlags: 0
@@ -5950,7 +5979,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1667401900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7254,7 +7283,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926128962}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b2e32dc37bfc5a438f3819973b8ace1, type: 3}
   m_Name: 
@@ -7551,7 +7580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2060770155
 RectTransform:
   m_ObjectHideFlags: 0
