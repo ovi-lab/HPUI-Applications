@@ -35,7 +35,9 @@ Single-context: `CONTEXT.md` at the repo root, ADRs in `docs/adr/`. See `docs/ag
 
 Before starting an implementation, check out to an appropriately named branch.
 
-For implementations, do not touch Unity generated files (scene files, meta files, etc.)
+PRs target `HPUI-in-Mixed-Reality`, not `main`.
+
+Scene files (`Assets/_Scenes/*.unity`) are part of the change when scene wiring is needed to test or use an implementation. Do not edit scene files by hand, but do commit the dev's scene modifications with the change — as a separate commit is fine (e.g. `[U] Scene wiring for ...`), included when the user approves with "lgtm".
 
 ## Testing policy
 
@@ -50,6 +52,7 @@ After an implementation is complete (to the best of your ability), follow this s
 Do not perform ad-hoc testing of your own (scratch harnesses, scratch builds, CLI verification runs). The user decides whether and how to test.
 
 Once user approves with "lgtm", commit, push, open a pr, link the issue with the pr such that it auto closes when the issue is done.
+The PR body must include a short "Validation" section describing how the change was validated during the dev's testing: the concrete scenarios exercised and what was observed to work (e.g. whitespace-heavy inserts trimmed and split correctly; delete of the last word kept the caret in range; misuse threw the expected assertion).
 For commit message, use the following style (combine them when multiple files have been edited in a commit):
 
 - [U] for Unity files
