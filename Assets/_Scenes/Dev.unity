@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 4531022}
   - component: {fileID: 4531024}
   - component: {fileID: 4531023}
+  - component: {fileID: 4531025}
   m_Layer: 0
   m_Name: ThumbSwype
   m_TagString: Untagged
@@ -175,14 +176,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   topRow: {fileID: 1776563688}
-  minMaxTopRowLength: {x: 0.04373, y: -0.02899}
-  minMaxTopRowHeight: {x: 0.00538, y: -0.00471}
   midRow: {fileID: 1513419180}
-  minMaxMidRowLength: {x: 0.04537, y: -0.01891}
-  minMaxMidRowHeight: {x: 0.00659, y: -0.00873}
   bottomRow: {fileID: 1698494361}
-  minMaxBottomRowLength: {x: 0.04751, y: -0.01731}
-  minMaxBottomRowHeight: {x: 0.00378, y: 0.00154}
 --- !u!114 &4531023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +235,36 @@ MonoBehaviour:
   serverPort: 8012
   contextWords: 
   showPerf: 0
+--- !u!114 &4531025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4531020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68dac1418354fc942b3509d22df18bce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Scripts.Keyboard.Text.FingerRowKeyPlacer
+  keyPrefab: {fileID: 3033942091380419893, guid: cf1ed8a4124469644adee0964f30e56a,
+    type: 3}
+  letterMaterialPathFormat: Keyboard/Mats/Letters/* 1
+  debugOutput: {fileID: 0}
+  rows:
+  - rowInteractable: {fileID: 1776563688}
+    rowIndex: 0
+  - rowInteractable: {fileID: 1513419180}
+    rowIndex: 1
+  - rowInteractable: {fileID: 1698494361}
+    rowIndex: 2
+  layoutResourceName: layout
+  placeOnSurfaceCreated: 1
+  adjustedLetters:
+  - letter: 121
+    yOffset: -1
+  - letter: 118
+    yOffset: 1
 --- !u!1 &21445663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,7 +1856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &513002165
 Transform:
   m_ObjectHideFlags: 0
@@ -5595,7 +5620,7 @@ MonoBehaviour:
         longitudinalOffset: 0
       m_Variable: {fileID: 0}
     jointTransform: {fileID: 0}
-  defaultMaterial: {fileID: 2100000, guid: 887109aa62ad36f438098afe551d2f76, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: c875adb97de5dbf44b56533c31724c3f, type: 2}
   filter: {fileID: 0}
   sigmaFactor: 0.25
   continuousSurfaceCreatedEvent:
@@ -6479,7 +6504,7 @@ MonoBehaviour:
         longitudinalOffset: 0
       m_Variable: {fileID: 0}
     jointTransform: {fileID: 0}
-  defaultMaterial: {fileID: 2100000, guid: 858ed7dcdaf353f4db2d3d406526b0af, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: c875adb97de5dbf44b56533c31724c3f, type: 2}
   filter: {fileID: 0}
   sigmaFactor: 0.25
   continuousSurfaceCreatedEvent:
@@ -6861,7 +6886,7 @@ MonoBehaviour:
         longitudinalOffset: 0
       m_Variable: {fileID: 0}
     jointTransform: {fileID: 0}
-  defaultMaterial: {fileID: 2100000, guid: 6bef1440e897afb4fb761b274015ef25, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: c875adb97de5dbf44b56533c31724c3f, type: 2}
   filter: {fileID: 0}
   sigmaFactor: 0.25
   continuousSurfaceCreatedEvent:
@@ -7283,13 +7308,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926128962}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b2e32dc37bfc5a438f3819973b8ace1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ubco.ovilab.ViconUnityStream::ubco.ovilab.ViconUnityStream.SubjectDataManager
   baseURI: ws://10.80.58.233:5001/marker/
-  streamType: 2
+  streamType: 1
   enableWriteData: 0
   fileSaveLocationBase: 0
   fixedFileSaveLocationBase: 
