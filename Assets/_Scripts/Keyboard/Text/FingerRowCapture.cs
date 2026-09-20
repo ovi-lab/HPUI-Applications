@@ -5,9 +5,9 @@ using UnityEngine.Events;
 namespace _Scripts.Keyboard.Text
 {
     /// <summary>
-    /// Pure sensor. Subscribes to HPUI finger-row interactables, remaps each row's
-    /// spatial coordinates into normalized (0,1) keyboard space, and fires raw
-    /// position events every frame.
+    /// Pure sensor. Subscribes to HPUI finger-row interactables, uses each row's
+    /// spatial coordinates directly (clamped to (0,1)) with the keyboard-space y
+    /// band-mapped per row, and fires raw position events every frame.
     /// </summary>
     public class FingerRowCapture : MonoBehaviour
     {
@@ -27,29 +27,11 @@ namespace _Scripts.Keyboard.Text
         [SerializeField]
         private HPUIGeneratedContinuousInteractable topRow;
 
-        [SerializeField, Tooltip("Range of data capture along the top finger interactable")]
-        private Vector2 minMaxTopRowLength;
-
-        [SerializeField, Tooltip("Range of data capture across the top finger interactable")]
-        private Vector2 minMaxTopRowHeight;
-
         [SerializeField]
         private HPUIGeneratedContinuousInteractable midRow;
 
-        [SerializeField, Tooltip("Range of data capture along the middle finger interactable")]
-        private Vector2 minMaxMidRowLength;
-
-        [SerializeField, Tooltip("Range of data capture across the middle finger interactable")]
-        private Vector2 minMaxMidRowHeight;
-
         [SerializeField]
         private HPUIGeneratedContinuousInteractable bottomRow;
-
-        [SerializeField, Tooltip("Range of data capture along the ring finger interactable")]
-        private Vector2 minMaxBottomRowLength;
-
-        [SerializeField, Tooltip("Range of data capture across the ring finger interactable")]
-        private Vector2 minMaxBottomRowHeight;
 
         private void OnEnable()
         {
@@ -77,39 +59,37 @@ namespace _Scripts.Keyboard.Text
                 return;
 
             IHPUIInteractable currentInteractable = args.interactableObject;
+            // args.Position is (x = across row, y = along row): keyboard-space x
+            // comes from Position.y (clamped), keyboard-space y from Position.x
+            // (clamped and band-mapped: top 0-1/3, mid 1/3-2/3, bottom 2/3-1).
+            // The interactable provides positions that can be used directly after
+            // the one-prefab-per-key mapping; no min-max remapping needed.
+            Debug.Assert(!float.IsNaN(args.Position.x) && !float.IsNaN(args.Position.y),
+                $"Non-finite interactable position from {currentInteractable.transform.name}: {args.Position}");
             Vector2 rawPosition = new Vector2(args.Position.y, args.Position.x);
             Vector2 normalizedPosition;
 
             switch (currentInteractable)
             {
                 case var i when ReferenceEquals(i, topRow):
-                    normalizedPosition = ComputeRowPosition(args.Position, minMaxTopRowLength, minMaxTopRowHeight, 0f, 1f / 3f);
+                    normalizedPosition = new Vector2(Mathf.Clamp01(args.Position.y), Mathf.Lerp(0f, 1f / 3f, Mathf.Clamp01(args.Position.x)));
                     break;
                 case var i when ReferenceEquals(i, midRow):
-                    normalizedPosition = ComputeRowPosition(args.Position, minMaxMidRowLength, minMaxMidRowHeight, 1f / 3f, 2f / 3f);
+                    normalizedPosition = new Vector2(Mathf.Clamp01(args.Position.y), Mathf.Lerp(1f / 3f, 2f / 3f, Mathf.Clamp01(args.Position.x)));
                     break;
                 case var i when ReferenceEquals(i, bottomRow):
-                    normalizedPosition = ComputeRowPosition(args.Position, minMaxBottomRowLength, minMaxBottomRowHeight, 2f / 3f, 1f);
+                    normalizedPosition = new Vector2(Mathf.Clamp01(args.Position.y), Mathf.Lerp(2f / 3f, 1f, Mathf.Clamp01(args.Position.x)));
                     break;
                 default:
                     Debug.LogError($"Unknown interactable sending data: {args.interactableObject.transform.name}");
                     return;
             }
 
+            Debug.Assert(normalizedPosition.x >= 0f && normalizedPosition.x <= 1f, $"Keyboard-space x out of range: {normalizedPosition.x}");
+            Debug.Assert(normalizedPosition.y >= 0f && normalizedPosition.y <= 1f, $"Keyboard-space y out of range: {normalizedPosition.y}");
+
             OnRawPosition?.Invoke(normalizedPosition);
             OnRawPositionDebug?.Invoke(rawPosition, args.interactableObject.transform.name);
-        }
-
-        /// <summary>
-        /// Remaps an interactable-space position (x = across row, y = along row)
-        /// into a normalized (0,1) keyboard-space coordinate.
-        /// </summary>
-        private static Vector2 ComputeRowPosition(Vector2 position, Vector2 minMaxLength, Vector2 minMaxHeight, float yOutMin, float yOutMax)
-        {
-            float x = Mathf.Clamp01(Mathf.InverseLerp(minMaxLength.x, minMaxLength.y, position.y));
-            float yLocal = Mathf.Clamp01(Mathf.InverseLerp(minMaxHeight.x, minMaxHeight.y, position.x));
-            float y = Mathf.Lerp(yOutMin, yOutMax, yLocal);
-            return new Vector2(x, y);
         }
     }
 }
