@@ -5,9 +5,10 @@ using UnityEngine.Events;
 namespace _Scripts.Keyboard.Text
 {
     /// <summary>
-    /// Pure sensor. Subscribes to HPUI finger-row interactables, uses each row's
-    /// spatial coordinates directly (clamped to (0,1)) with the keyboard-space y
-    /// band-mapped per row, and fires raw position events every frame.
+    /// Pure sensor. Subscribes to HPUI finger-row interactables, normalizes the
+    /// raw center-relative Unity-unit coordinates between each row's mesh size
+    /// bounds, band-maps the across-row axis into the row's keyboard-space
+    /// third, and fires raw position events every frame.
     /// </summary>
     public class FingerRowCapture : MonoBehaviour
     {
@@ -59,26 +60,29 @@ namespace _Scripts.Keyboard.Text
                 return;
 
             IHPUIInteractable currentInteractable = args.interactableObject;
-            // args.Position is (x = across row, y = along row): keyboard-space x
-            // comes from Position.y (clamped), keyboard-space y from Position.x
-            // (clamped and band-mapped: top 0-1/3, mid 1/3-2/3, bottom 2/3-1).
-            // The interactable provides positions that can be used directly after
-            // the one-prefab-per-key mapping; no min-max remapping needed.
-            Debug.Assert(!float.IsNaN(args.Position.x) && !float.IsNaN(args.Position.y),
-                $"Non-finite interactable position from {currentInteractable.transform.name}: {args.Position}");
+            // args.Position is a Unity-unit offset relative to the interactable's
+            // center, so each axis ranges over +/- half the mesh size. Normalize
+            // between those bounds: +size/2 maps to 0, -size/2 maps to 1.
+            // Keyboard-space x comes from the along-row axis (Position.y against
+            // Y_size); keyboard-space y comes from the across-row axis
+            // (Position.x against X_size), band-mapped per row: top 0-1/3,
+            // mid 1/3-2/3, bottom 2/3-1.
+            Debug.Assert(float.IsFinite(args.Position.x) && float.IsFinite(args.Position.y), $"Non-finite interactable position from {currentInteractable.transform.name}: {args.Position}");
+            Debug.Assert(topRow.X_size > 0f && topRow.Y_size > 0f && midRow.X_size > 0f && midRow.Y_size > 0f && bottomRow.X_size > 0f && bottomRow.Y_size > 0f,
+                "Interactable mesh sizes must be positive for normalization");
             Vector2 rawPosition = new Vector2(args.Position.y, args.Position.x);
             Vector2 normalizedPosition;
 
             switch (currentInteractable)
             {
                 case var i when ReferenceEquals(i, topRow):
-                    normalizedPosition = new Vector2(Mathf.Clamp01(args.Position.y), Mathf.Lerp(0f, 1f / 3f, Mathf.Clamp01(args.Position.x)));
+                    normalizedPosition = new Vector2(Mathf.Clamp01(0.5f - args.Position.y / topRow.Y_size), Mathf.Lerp(0f, 1f / 3f, Mathf.Clamp01(0.5f - args.Position.x / topRow.X_size)));
                     break;
                 case var i when ReferenceEquals(i, midRow):
-                    normalizedPosition = new Vector2(Mathf.Clamp01(args.Position.y), Mathf.Lerp(1f / 3f, 2f / 3f, Mathf.Clamp01(args.Position.x)));
+                    normalizedPosition = new Vector2(Mathf.Clamp01(0.5f - args.Position.y / midRow.Y_size), Mathf.Lerp(1f / 3f, 2f / 3f, Mathf.Clamp01(0.5f - args.Position.x / midRow.X_size)));
                     break;
                 case var i when ReferenceEquals(i, bottomRow):
-                    normalizedPosition = new Vector2(Mathf.Clamp01(args.Position.y), Mathf.Lerp(2f / 3f, 1f, Mathf.Clamp01(args.Position.x)));
+                    normalizedPosition = new Vector2(Mathf.Clamp01(0.5f - args.Position.y / bottomRow.Y_size), Mathf.Lerp(2f / 3f, 1f, Mathf.Clamp01(0.5f - args.Position.x / bottomRow.X_size)));
                     break;
                 default:
                     Debug.LogError($"Unknown interactable sending data: {args.interactableObject.transform.name}");
