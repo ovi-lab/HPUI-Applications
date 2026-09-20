@@ -1,11 +1,12 @@
 using System;
+using UnityEngine;
 
 namespace _Scripts.HPUI
 {
     public class GestureStateMachine
     {
-        private readonly float alpha;
-        private readonly float beta;
+        private float alpha;
+        private float beta;
         private readonly float? prematureTriggerTime; // null = disabled
 
         public bool GestureOngoing { get; private set; }
@@ -25,6 +26,50 @@ namespace _Scripts.HPUI
             this.alpha = alpha;
             this.beta = beta;
             this.prematureTriggerTime = prematureTriggerTime;
+            WarnIfAlphaExceedsBeta(alpha, beta);
+        }
+
+        /// <summary>
+        /// Updates alpha/beta thresholds. Safe mid-gesture: alpha affects the
+        /// validity check and beta the idle timeout, both applied live.
+        /// </summary>
+        public void UpdateThresholds(float alpha, float beta)
+        {
+            Debug.Assert(!float.IsNaN(alpha) && !float.IsNaN(beta),
+                $"Non-finite thresholds: alpha={alpha}, beta={beta}");
+            this.alpha = Mathf.Max(0f, alpha);
+            this.beta = Mathf.Max(0f, beta);
+            WarnIfAlphaExceedsBeta(this.alpha, this.beta);
+        }
+
+        /// <summary>
+        /// A gesture always ends with duration >= beta, so alpha > beta makes
+        /// every gesture invalid - a configuration that can never complete.
+        /// </summary>
+        private static void WarnIfAlphaExceedsBeta(float alpha, float beta)
+        {
+            if (alpha > beta)
+                Debug.LogWarning($"GestureStateMachine: alpha ({alpha}) > beta ({beta}); every gesture will be cancelled instead of completing.");
+        }
+
+        /// <summary>
+        /// Ends the ongoing gesture as if the idle timeout had elapsed, applying
+        /// the same valid/invalid split as <see cref="Tick"/>. No-op when idle.
+        /// </summary>
+        public void EndIfOngoing()
+        {
+            if (!GestureOngoing)
+                return;
+
+            bool wasPrematureTrigger = PrematureTrigger;
+            bool valid = GestureDuration >= alpha;
+            Reset();
+            if (wasPrematureTrigger)
+                return; // matches Tick: premature-triggered gestures end silently
+            if (valid)
+                OnGestureCompleted?.Invoke();
+            else
+                OnGestureCancelled?.Invoke();
         }
 
         public void ReportInput()
