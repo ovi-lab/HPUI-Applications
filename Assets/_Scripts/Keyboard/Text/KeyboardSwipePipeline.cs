@@ -12,7 +12,7 @@ namespace _Scripts.Keyboard.Text
     /// from a <see cref="FingerRowCapture"/>, gates gesture start on sustained
     /// contact (alpha), stitches momentary contact losses (beta), owns the
     /// gesture state machine, applies One Euro filtering, accumulates the
-    /// trajectory, and sends completed gestures to the <see cref="SwipeRecognizer"/>
+    /// filtered trajectory, and sends completed gestures to the <see cref="SwipeRecognizer"/>
     /// for word recognition.
     ///
     /// Events are the primary output surface — visualizers, debug displays, and
@@ -55,7 +55,7 @@ namespace _Scripts.Keyboard.Text
         [Tooltip("Broadcasts the filtered cursor position every input frame.")]
         public UnityEvent<Vector2> OnCursorPosition;
 
-        [Tooltip("Broadcasts the complete raw gesture trajectory when the gesture completes.")]
+        [Tooltip("Broadcasts the complete filtered gesture trajectory when the gesture completes.")]
         public UnityEvent<List<Vector2>> OnGestureCompleted;
 
         public UnityEvent OnGestureStarted;
@@ -215,7 +215,7 @@ namespace _Scripts.Keyboard.Text
 
         /// <summary>
         /// Reports input to the state machine, filters the position, accumulates
-        /// the trajectory, and broadcasts the filtered cursor position.
+        /// the filtered trajectory, and broadcasts the filtered cursor position.
         /// </summary>
         private void Feed(Vector2 rawPosition)
         {
@@ -225,7 +225,7 @@ namespace _Scripts.Keyboard.Text
                 return;
 
             Vector2 filtered = positionFilter.Filter(rawPosition);
-            gestureTrajectory.Add(rawPosition);
+            gestureTrajectory.Add(filtered);
             OnCursorPosition?.Invoke(filtered);
         }
 
@@ -240,8 +240,9 @@ namespace _Scripts.Keyboard.Text
             if (positionFilter == null)
                 return;
 
-            gestureTrajectory.Add(lastRawPosition);
-            OnCursorPosition?.Invoke(positionFilter.Filter(lastRawPosition));
+            Vector2 filtered = positionFilter.Filter(lastRawPosition);
+            gestureTrajectory.Add(filtered);
+            OnCursorPosition?.Invoke(filtered);
         }
 
         private void HandleGestureStarted()
