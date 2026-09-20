@@ -194,7 +194,7 @@ MonoBehaviour:
   alpha: 0.06
   beta: 0.25
   filterFrequency: 72
-  minCutoff: 3.5
+  minCutoff: 1
   filterBeta: 0.045
   dCutoff: 1
   swipeRecognizer: {fileID: 4531024}
