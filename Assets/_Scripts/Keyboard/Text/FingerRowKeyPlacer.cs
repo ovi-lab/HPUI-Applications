@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using EditorAttributes;
 using _Scripts.Utils;
+using EditorAttributes;
 using TMPro;
 using ubco.ovilab.HPUI.Core.Interaction;
 using UnityEngine;
@@ -52,10 +52,6 @@ namespace _Scripts.Keyboard.Text
         [Tooltip("Material path format under Resources applied to each cloned key. '*' is substituted with the uppercase letter (e.g. 'Keyboard/Mats/Letters/* 1' -> 'Keyboard/Mats/Letters/Q 1').")]
         [SerializeField]
         private string letterMaterialPathFormat = "Keyboard/Mats/Letters/* 1";
-
-        [Tooltip("Optional TMP label that receives placement logs.")]
-        [SerializeField]
-        private TMP_Text debugOutput;
 
         [Header("Rows")]
         [Tooltip("One entry per finger row. Row identity (not layout cz) decides which finger a key lands on.")]
@@ -278,13 +274,6 @@ namespace _Scripts.Keyboard.Text
                 Collider target = column[Mathf.Clamp(centerX, 0, column.Count - 1)];
                 PlaceKey(key, target);
                 placed++;
-            }
-
-            string message = $"[FingerRowKeyPlacer] Placed {placed} keys on '{row.name}' (y divisions {yDivisions}, {columns.Count} y columns, center x {centerX}).";
-            Debug.Log(message);
-            if (debugOutput != null)
-            {
-                debugOutput.text = message;
             }
         }
 

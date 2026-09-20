@@ -9,9 +9,11 @@ namespace _Scripts.Keyboard.Text
 {
     /// <summary>
     /// Central pipeline for keyboard swipe gestures. Subscribes to raw positions
-    /// from a <see cref="FingerRowCapture"/>, owns the gesture state machine,
-    /// applies One Euro filtering, accumulates the trajectory, and sends completed
-    /// gestures to the <see cref="SwipeRecognizer"/> for word recognition.
+    /// from a <see cref="FingerRowCapture"/>, gates gesture start on sustained
+    /// contact (alpha), stitches momentary contact losses (beta), owns the
+    /// gesture state machine, applies One Euro filtering, accumulates the
+    /// trajectory, and sends completed gestures to the <see cref="SwipeRecognizer"/>
+    /// for word recognition.
     ///
     /// Events are the primary output surface — visualizers, debug displays, and
     /// the future <c>TextCompositionController</c> all consume from here.
@@ -23,17 +25,11 @@ namespace _Scripts.Keyboard.Text
         private FingerRowCapture fingerRowCapture;
 
         [Header("Gesture State Parameters")]
-        [SerializeField, Tooltip("Minimum gesture duration (s) to count as valid.")]
+        [SerializeField, Tooltip("Minimum contact duration (s) before a contact registers as a gesture; shorter contacts are discarded as transients.")]
         private float alpha = 0.15f;
 
-        [SerializeField, Tooltip("Idle time (s) before a gesture is considered finished.")]
+        [SerializeField, Tooltip("Maximum contact loss (s) stitched into one ongoing gesture; longer losses end the gesture.")]
         private float beta = 0.3f;
-
-        [SerializeField, Tooltip("Enable premature trigger for short/button-like gestures.")]
-        private bool enablePrematureTrigger;
-
-        [SerializeField, Tooltip("Duration (s) of continuous input before a premature trigger fires.")]
-        private float prematureTriggerTime = 0.1f;
 
         [Header("One Euro Filter Parameters")]
         [SerializeField, Tooltip("Sampling frequency (Hz).")]
@@ -65,25 +61,50 @@ namespace _Scripts.Keyboard.Text
         public UnityEvent OnGestureStarted;
         public UnityEvent OnGestureCancelled;
 
-        [Tooltip("Fired when a short/button-like gesture triggers before the full gesture times out.")]
-        public UnityEvent OnPrematureTrigger;
-
         [Tooltip("Fired when swipe recognition returns a word.")]
         public UnityEvent<string> OnWordRecognized;
+
+        /// <summary>
+        /// Minimum contact duration (s) before a contact registers as a gesture.
+        /// Contacts shorter than this are discarded as transients.
+        /// Applied live; safe to change mid-gesture.
+        /// </summary>
+        public float Alpha
+        {
+            get => alpha;
+            set { alpha = Mathf.Max(0f, value); gestureState?.UpdateThresholds(alpha, beta); }
+        }
+
+        /// <summary>
+        /// Maximum contact loss (s) stitched into one ongoing gesture.
+        /// Longer losses end the gesture. Applied live; safe to change mid-gesture.
+        /// </summary>
+        public float Beta
+        {
+            get => beta;
+            set { beta = Mathf.Max(0f, value); gestureState?.UpdateThresholds(alpha, beta); }
+        }
 
         private GestureStateMachine gestureState;
         private OneEuroFilter<Vector2> positionFilter;
         private List<Vector2> gestureTrajectory;
 
+        // Contact-level filtering state: alpha gates gesture start on sustained
+        // contact; beta stitches momentary losses by holding the last position.
+        private enum ContactState { Idle, Gating, Confirmed }
+        private ContactState contactState = ContactState.Idle;
+        private float contactElapsed;
+        private float sinceLastInput;
+        private bool inputThisFrame;
+        private Vector2 lastRawPosition;
+        private readonly List<Vector2> pendingContactBuffer = new();
+
         private void Awake()
         {
             gestureTrajectory = new List<Vector2>();
-
-            float? prematureTrigger = enablePrematureTrigger ? prematureTriggerTime : (float?)null;
-            gestureState = new GestureStateMachine(alpha, beta, prematureTrigger);
+            gestureState = new GestureStateMachine(alpha, beta);
 
             gestureState.OnGestureStarted += HandleGestureStarted;
-            gestureState.OnPrematureTriggerReached += HandlePrematureTrigger;
             gestureState.OnGestureCompleted += HandleGestureCompleted;
             gestureState.OnGestureCancelled += HandleGestureCancelled;
         }
@@ -104,19 +125,99 @@ namespace _Scripts.Keyboard.Text
         {
             if (fingerRowCapture != null)
                 fingerRowCapture.OnRawPosition.RemoveListener(HandleRawPosition);
+
+            contactState = ContactState.Idle;
+            pendingContactBuffer.Clear();
+
+            // Cancel any gesture left ongoing by a mid-gesture disable so a
+            // re-enable can't complete the stale trajectory.
+            gestureState?.Cancel();
         }
 
         private void Update()
         {
+            sinceLastInput += Time.deltaTime;
+
+            switch (contactState)
+            {
+                case ContactState.Gating:
+                    if (sinceLastInput >= beta)
+                    {
+                        // Contact ended before alpha elapsed - discard as transient.
+                        contactState = ContactState.Idle;
+                        pendingContactBuffer.Clear();
+                    }
+                    break;
+                case ContactState.Confirmed:
+                    if (sinceLastInput >= beta)
+                    {
+                        // Loss longer than beta ends the contact; resolve the gesture now.
+                        contactState = ContactState.Idle;
+                        gestureState.EndIfOngoing();
+                    }
+                    else if (!inputThisFrame)
+                    {
+                        HoldPosition();
+                    }
+                    break;
+            }
+
             gestureState.Tick(Time.deltaTime);
+
+            inputThisFrame = false;
         }
 
         /// <summary>
-        /// Called every frame a finger is tracking. Reports input to the state
-        /// machine, filters the position, accumulates the trajectory, and
-        /// broadcasts the filtered cursor position.
+        /// Called every frame a finger is tracking. Contacts shorter than
+        /// <see cref="alpha"/> are buffered and discarded; confirmed contacts
+        /// report to the state machine, filter the position, accumulate the
+        /// trajectory, and broadcast the filtered cursor position.
         /// </summary>
         private void HandleRawPosition(Vector2 rawPosition)
+        {
+            Debug.Assert(float.IsFinite(rawPosition.x) && float.IsFinite(rawPosition.y),
+                $"Non-finite raw position: {rawPosition}");
+            lastRawPosition = rawPosition;
+            sinceLastInput = 0f;
+            inputThisFrame = true;
+
+            switch (contactState)
+            {
+                case ContactState.Idle:
+                    contactState = ContactState.Gating;
+                    contactElapsed = 0f;
+                    pendingContactBuffer.Clear();
+                    pendingContactBuffer.Add(rawPosition);
+                    break;
+                case ContactState.Gating:
+                    contactElapsed += Time.deltaTime;
+                    pendingContactBuffer.Add(rawPosition);
+                    if (contactElapsed >= alpha)
+                        ConfirmContact();
+                    break;
+                case ContactState.Confirmed:
+                    Feed(rawPosition);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Promotes a gated contact to confirmed: replays the buffered positions
+        /// through the normal path so a real gesture keeps its true start.
+        /// </summary>
+        private void ConfirmContact()
+        {
+            contactState = ContactState.Confirmed;
+            foreach (Vector2 buffered in pendingContactBuffer)
+                Feed(buffered);
+            pendingContactBuffer.Clear();
+        }
+
+        /// <summary>
+        /// Reports input to the state machine, filters the position, accumulates
+        /// the trajectory, and broadcasts the filtered cursor position.
+        /// </summary>
+        private void Feed(Vector2 rawPosition)
         {
             gestureState.ReportInput();
 
@@ -128,16 +229,26 @@ namespace _Scripts.Keyboard.Text
             OnCursorPosition?.Invoke(filtered);
         }
 
+        /// <summary>
+        /// Stitches a contact loss shorter than beta by holding the last known
+        /// position: the state machine and trajectory stay continuous.
+        /// </summary>
+        private void HoldPosition()
+        {
+            gestureState.ReportInput();
+
+            if (positionFilter == null)
+                return;
+
+            gestureTrajectory.Add(lastRawPosition);
+            OnCursorPosition?.Invoke(positionFilter.Filter(lastRawPosition));
+        }
+
         private void HandleGestureStarted()
         {
             positionFilter = new OneEuroFilter<Vector2>(filterFrequency, minCutoff, filterBeta, dCutoff);
             gestureTrajectory.Clear();
             OnGestureStarted?.Invoke();
-        }
-
-        private void HandlePrematureTrigger()
-        {
-            OnPrematureTrigger?.Invoke();
         }
 
         private void HandleGestureCompleted()
